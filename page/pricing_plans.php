@@ -1,0 +1,107 @@
+		
+		<div class="main" style="text-align:center;">
+			
+			<!-- Header -->
+			<h2 class="underline">
+				<span>Our Pricing Plans</span>
+				<span></span>
+			</h2>
+			<!-- /Header -->
+            
+        <style>
+
+.large-h2 {
+  margin-top: 20px;
+  margin-bottom: 0px;
+  color: #15a346;
+  font-size: 60px;
+  line-height: 78px;
+  font-weight: 700;
+     font-family: 'Source Sans Pro';
+}
+            .header-h4 {
+                font-family: 'Source Sans Pro';
+                font-size: 26px;
+                line-height: 30px;
+                margin-bottom:18px;
+            }
+
+.pricing {
+  display: inline-block;
+  margin: 15px;
+  padding: 15px;
+  border: 2px solid #e9e9e3;
+}
+
+.pricing:hover {
+  border-color: #15a346;
+}
+
+.line-break {
+  height: 1px;
+  margin-top: 15px;
+  background-color: #e9e9e3;
+}
+
+.item-text {
+  margin-top: 15px;
+}
+
+.below-amount {
+  margin-bottom: 30px;
+}
+
+.bottom-button {
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  background-color: #15a346;
+    font-size: 26px;
+    padding: 10px;
+    color: white;
+}
+
+.bottom-button:hover {
+  background-color: #2c343d;
+    text-decoration:none;
+}
+    
+            </style>    
+            <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+			
+          <div class="pricing">
+                <h4 class="header-h4">Free - 30 Day Trial</h4>
+                <div class="line-break"></div>
+                <h2 class="large-h2">Free</h2>
+                 <div class="below-amount">Subscribe With Trial Profit </div>
+                <div class="item-text">Standard Monthly Plan</div>
+                <div class="line-break"></div>
+                <div class="item-text">Money-Back Guarantee</div>
+                <div class="line-break"></div>
+                <div class="item-text">Notification Alerts</div>
+                <div class="line-break"></div>
+                <div class="item-text">Highest Statistical Chance of Success</div>
+              <div class="line-break"></div>
+              <a href="https://grouca.com/sign.php" class="bottom-button">Sign Up</a>
+              </div>
+              <div class="pricing">
+                <h4 class="header-h4">Monthly</h4>
+                <div class="line-break"></div>
+                <h2 class="large-h2">$99</h2>
+                <div class="below-amount">per month</div>
+                <div class="item-text">Standard Monthly Plan</div>
+                <div class="line-break"></div>
+                <div class="item-text">Money-Back Guarantee</div>
+                <div class="line-break"></div>
+                <div class="item-text">Notification Alerts</div>
+                <div class="line-break"></div>
+                <div class="item-text">Highest Statistical Chance of Success</div>
+                <div class="line-break"></div>
+                <a href="https://grouca.com/signupforgrouca.php?price=monthly" class="bottom-button">Sign Up</a>
+            </div>
+            
+            <!--<div class="clear-fix section-background-color section-background-color-1 margin-top-80"></div>-->
+            
+		</div>
+    
