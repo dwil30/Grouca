@@ -1,4 +1,4 @@
-<?php require_once('include/navigation_bar_subpages.php'); ?>
+<?php require_once('include/navigation_bar.php'); ?>
 		<div class="section-background-color section-background-color-2">
 		
 			<div class="main" style="text-align:center;">

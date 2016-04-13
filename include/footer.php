@@ -14,13 +14,13 @@
 					<!-- Right column: menu -->
 					<div class="column-right">
 						<ul class="footer-menu list-0">
-							<li><a href="#home">Home</a></li>
-							<li><a href="#about">About</a></li>
-							<li><a href="#services">Services</a></li>
-							<li><a href="#team">Team</a></li>
-							<li><a href="#pricing-plans">Pricing</a></li>
+							<li><a href="index.php#home">Home</a></li>
+							<li><a href="index.php#about">About</a></li>
+							<li><a href="index.php#services">Services</a></li>
+							<li><a href="index.php#team">Team</a></li>
+							<li><a href="index.php#pricing-plans">Pricing</a></li>
+							<li><a href="index.php#contact">Contact</a></li>
 							<li><a href="perf.php">Performance</a></li>
-							<li><a href="#contact">Contact</a></li>
                             <li><a href="legal.php">Legal</a></li>
 							<?php if (empty($_SESSION['LoggedIn'])){ ?>
 						<li><a href="log.php">Login<span></span></a></li>

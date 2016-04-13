@@ -27,8 +27,8 @@
 					   <?php require_once('page/team.php'); ?>
                     </div>   
 				</li>	
-                  
-
+                 
+                 
 				<li class="page-pricing-plans" id="page-pricing-plans">
                     <div id="pricing-plans"> 
 					   <?php require_once('page/pricing_plans.php'); ?>

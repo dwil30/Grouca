@@ -1,4 +1,4 @@
-<?php require_once('include/navigation_bar_subpages.php');
+<?php require_once('include/navigation_bar.php');
 include("base.php"); 
 function convertD ($date){
 return date('n/j/y', strtotime($date));
@@ -13,7 +13,7 @@ $sql_query= $mysqli->query("select s.* from positions s join (select *, max(Time
 $number = $sql_query->num_rows;
 ?>
     
-<?php require_once('include/navigation_bar_subpages.php'); ?>
+<?php require_once('include/navigation_bar.php'); ?>
 		<div class="section-background-color section-background-color-2">
 		
 			<div class="main" style="text-align:center;width:auto;margin-left:15px;margin-right:15px;">

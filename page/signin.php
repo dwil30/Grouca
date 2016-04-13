@@ -1,6 +1,6 @@
 <?php
 
-require_once('include/navigation_bar_subpages.php'); 
+require_once('include/navigation_bar.php'); 
 
 ?>
 		<div class="section-background-color section-background-color-2">

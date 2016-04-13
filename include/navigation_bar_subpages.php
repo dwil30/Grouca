@@ -3,20 +3,20 @@
 			
 			<div class="main clear-fix">
 
-				<!-- Logo -->
+				<!-- Logo from nav bar SUB! -->
 				<div class="logo">
 					<a href="index.php">
 						<img src="image/logo.png" alt="Grouca Logo"/>
 					</a>
 				</div>
-				<!-- /Logo -->
+				<!-- /Logo nav bar SUB! -->
                 
                 <?php 
                 $actual_link = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
                 if (isset($_GET['id'])){$id = $_GET['id'];}
                 else $id = 0; ?>
 
-				<!-- Menu -->
+				<!-- Menu nav bar SUB! -->
 				<div id="menu">
 					<div id="menu-selected"></div>
 					<ul class="sf-menu">
@@ -51,21 +51,21 @@
                      ?>
 					</ul>
 				</div>
-				<!-- /Menu -->
+				<!-- /Menu nav bar SUB! -->
 				
-				<!-- Responsive menu  -->
+				<!-- Responsive menu  nav bar SUB! -->
 				<div id="menu-responsive" class="clear-fix">
 					<select>
-						<option value="index.php#about?id=about" <?php if ($id == 'about') echo 'selected';?>>About</option>
-						<option value="index.php#services?id=services" <?php if ($id == 'services') echo 'selected';?>>Services</option>
-						<option value="index.php#team?id=team" <?php if ($id == 'team') echo 'selected';?>>Team</option>
-						<option value="index.php#pricing-plans?id=pricing-plans" <?php if ($id == 'pricing-plans') echo 'selected';?>>Pricing</option>
-						<option value="index.php#contact?id=contact" <?php if ($id == 'contact') echo 'selected';?>>Contact</option>
-                        <option value="perf.php" <?php if (strpos($actual_link,'perf') !== false) {echo 'Selected';}?> >Performance</option>
+						<option value="index.php#about">About</option>
+						<option value="index.php#services">Services</option>
+						<option value="index.php#team">Team</option>
+						<option value="index.php#pricing-plans">Pricing</option>
+						<option value="index.php#contact">Contact</option>
+                        <option value="perf.php"<?php if (strpos($actual_link,'perf') !== false) {echo 'Selected';}?> >Performance</option>
 						
                         <?php if (empty($_SESSION['LoggedIn'])){ ?>
-						<option value="log.php">Login</option>
-						<option value="sign.php">Sign Up</option>
+						<option value="log.php" <?php if (strpos($actual_link,'log') !== false) {echo 'Selected';}?> >Login</option>
+						<option value="sign.php" <?php if (strpos($actual_link,'sign') !== false) {echo 'Selected';}?> >Sign Up</option>
                         <?php }
                         else {
                             if (isset($_SESSION['Account'])){
@@ -85,7 +85,7 @@
                         } ?>
 					</select>
 				</div>
-				<!-- /Responsive menu  -->
+				<!-- /Responsive menu  nav bar SUB! -->
 				
 			</div>
 							

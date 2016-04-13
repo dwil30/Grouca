@@ -21,10 +21,10 @@
 						<div class="column-left">
 							
 							<!-- Image -->
-							<div class="image image-overlay-image image-fancybox-image">
-								<a href="https://placehold.it/460x400">
-									<img src="https://placehold.it/460x400" alt=""/>
-								</a>
+							<div class="image">
+								
+									<img src="images/MauriceGrouca.JPG" alt=""/>
+								
 								<div class="image-description">
 									<h5>Maurice Lichten</h5>
 									<span>Managing Director</span>
@@ -34,8 +34,8 @@
 							
 							<!-- Social icon list -->
 							<ul class="social-list social-list-style-1">
+                                <li><a href="index.php#contact" class="social-list-email"></a></li>
 								<li><a href="#" class="social-list-facebook"></a></li>
-								<li><a href="#" class="social-list-googleplus"></a></li>
 								<li><a href="#" class="social-list-twitter"></a></li>
 							</ul>
 							<!-- /Social icon list -->
@@ -53,7 +53,7 @@
 							
 							<!-- About -->
 							<p>
-								Maurice Lichten brings over 45 years of experience in the jewelry industry. Maurice's management skills and experience as a educator brings professional know how to our valued option trading clients.
+								Maurice Lichten brings years of experience as an option modeler and as an educator bringing professional know how to our valued option trading clients.
 							</p>
 							<!-- /About -->
 							
@@ -90,10 +90,10 @@
 						
 						<div class="column-left">
 							
-							<div class="image image-overlay-image image-fancybox-image">
-								<a href="https://placehold.it/460x400">
-									<img src="https://placehold.it/460x400" alt=""/>
-								</a>
+							<div class="image">
+								
+									<img src="images/MauriceGrouca.JPG" alt=""/>
+							
 								<div class="image-description">
 									<h5>Gordon Griffin</h5>
 									<span>Senior Options Strategist </span>
@@ -101,9 +101,9 @@
 							</div>
 							
 							<ul class="social-list social-list-style-1">
-								<li><a href="#" class="social-list-email"></a></li>
-								<li><a href="#" class="social-list-tumblr"></a></li>
-								<li><a href="#" class="social-list-digg"></a></li>
+								 <li><a href="index.php#contact" class="social-list-email"></a></li>
+								<li><a href="#" class="social-list-facebook"></a></li>
+								<li><a href="#" class="social-list-twitter"></a></li>
 							</ul>
 							
 						</div>

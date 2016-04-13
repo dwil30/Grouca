@@ -1,5 +1,4 @@
 <?php 
-
 //handle the signup form
 if(isset($_POST['contact-form-submit'])) {
     session_start();
@@ -42,7 +41,14 @@ if(isset($_POST['contact-form-submit'])) {
                     }
                 }
 
-                header("location:memb.php");
+                if ((isset($_GET['discount'])) and ($_GET['discount'] == 'grouca1')) {
+                    header("location:signup.php?discount=grouca1");
+                } elseif ((isset($_GET['discount'])) and ($_GET['discount'] == 'normal')) {
+                    header("location:signup.php");
+                } else {
+                    header("location:memb.php");
+                }
+
 
             } else {
                 $errors .= "Wrong password. Please try again.";
@@ -73,4 +79,4 @@ if(isset($_POST['contact-form-submit'])) {
 
 			</ul>
 
-			<?php require_once('include/contact_footer.php'); ?>
+			<?php require_once('include/footer.php'); ?>

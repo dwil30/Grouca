@@ -1,9 +1,18 @@
+// store the hash (DON'T put this code inside the $() function, it has to be executed 
+// right away before the browser can start scrolling!
+var target = window.location.hash,
+    target = target.replace('#', '');
+
+// delete hash so the page won't scroll to it
+window.location.hash = "";
 $(document).ready(function() 
 {
+
 	/**************************************************************************/
 	/*	Template options													  */
 	/**************************************************************************/
 	
+
 	var optionDefault={}
 	
 	var option=$.extend(optionDefault,optionTemplate);
@@ -15,9 +24,9 @@ $(document).ready(function()
 	var template=new Template(option);
 	
 	template.preloadPage();
-	
+
 	template.createHomeCarousel();
-	
+
 	template.createGoogleMaps('googleMap');
 	template.createTwitterUserTimeline('.twitter-user-timeline-list');
 	
@@ -44,6 +53,8 @@ $(document).ready(function()
 	template.createForm();
 	
 	template.createCarousel();
+
+	template.createCarouselPricing();
 	
 	template.createWaypoints();
 	
@@ -57,4 +68,7 @@ $(document).ready(function()
 	});
 	
 	template.createParallax();
+	
 });
+
+

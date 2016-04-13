@@ -41,4 +41,4 @@ function startCREPayment(){
 }
 
 </script>
-			<?php require_once('include/contact_footer.php'); ?>
+			<?php require_once('include/footer.php'); ?>

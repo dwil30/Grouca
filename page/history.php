@@ -1,4 +1,4 @@
-<?php require_once('include/navigation_bar_subpages.php');
+<?php require_once('include/navigation_bar.php');
 include("base.php"); 
 function convertD ($date){
 return date('n/j/y', strtotime($date));
@@ -26,7 +26,7 @@ return date('n/j/y', strtotime($date));
     if (($t8 =mysqli_num_rows($sql_buy4)) >0){$buy4=1;}
 ?>
     
-<?php require_once('include/navigation_bar_subpages.php'); ?>
+<?php require_once('include/navigation_bar.php'); ?>
 		<div class="section-background-color section-background-color-2">
 		
 			<div class="main" style="text-align:center;width:95%;">

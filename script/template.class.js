@@ -1,4 +1,4 @@
-/******************************************************************************/
+/***************************************************************************/
 /******************************************************************************/
 
 function Template(options)
@@ -79,6 +79,12 @@ Template.prototype.createHomeCarousel=function()
 						$this.updateWaypoints();
 					}
 				});
+			    if (target) {
+					var page=$('.page-list>li#'+'page-'+target);
+					$.waypoints('refresh');
+					$.scrollTo(page,{'duration':1000,'offset':-1*$('#navigation-bar').actual('height')+1,easing:'easeOutQuint'});
+					$('#menu-responsive > select').val('index.php#'+target);
+		    	}
 			}});
 		});
 	});
@@ -335,7 +341,7 @@ Template.prototype.createStickyNavigationBar=function()
 				logo.css({'display':'none'});
 
 				menuItem.stop().animate({'padding-top':10,'padding-bottom':10},{duration:250});
-
+				
 				clearTimeout($.data(this,'scrollTimer'));
 				$.data(this,'scrollTimer',setTimeout(function() 
 				{
@@ -343,7 +349,7 @@ Template.prototype.createStickyNavigationBar=function()
 					{
 						logo.css({'display':'block'});
 					}});
-				},500));
+				},200));
 			}
 			else
 			{
@@ -369,13 +375,12 @@ Template.prototype.createNavigation=function()
 		
 		var hash=window.location.hash.substring(1);
 		var page=$('.page-list>li#'+$pagePrefix+hash);
-		
 		if(page.length==1)
 		{
 			$this.updateWaypoints();
-			
 			$.scrollTo(page,{'duration':1000,'offset':-1*$('#navigation-bar').actual('height')+1,easing:'easeOutQuint','onAfter':function() 
 			{
+				$('#menu-responsive > select').val('index.php#'+hash);
 				window.location.hash='#page';
 			}});				
 		}
@@ -403,7 +408,7 @@ Template.prototype.preloadPage=function()
 			
 			$this.preloadPage();
 			
-		},100);
+		},200);
 	});
 };
 
@@ -476,7 +481,7 @@ Template.prototype.preloaderWait=function(object,callbackFunction)
 			window.clearTimeout(preloaderClock);
 			callbackFunction();
 		}
-	},10);
+	},100);
 };
 
 /******************************************************************************/
@@ -907,6 +912,68 @@ Template.prototype.createCarousel=function()
 };
 
 /******************************************************************************/
+/*Carousel for pricing plans*/
+/******************************************************************************/
+
+Template.prototype.createCarouselPricing=function()
+{
+	$('#carousel-pricing').each(function() 
+	{
+		var carousel=$(this);
+		var carouselContent=carousel.children('.carousel-content');
+		
+		var carouselList=carouselContent.find('ul:first');
+		var margin=carouselList.hasClass('layout-p-20x20x20x20x20') ? 10 : 30;
+	
+		carouselList.children('li').css({'margin-right':margin,'float':'left','clear':'none'});
+		
+		var columnCount=$this.getLayoutColumnCount(carouselList);
+		var columnWidth=(($contentWidth+margin)/columnCount);
+		
+		$this.setCarouselResponsive(carousel,columnWidth,margin);
+		$(window).bind('resize',function() 
+		{
+			$this.setCarouselResponsive(carousel,columnWidth,margin);
+		});
+	
+		carouselList.carouFredSel(
+		{
+			auto					:	false,
+			infinite				:	true,
+			circular				:	true,
+			direction				:	'left',
+			items: 
+			{
+				minimum				:	$this.getLayoutColumnCount(carouselList)+1		
+			},	
+			scroll: 
+			{
+				items				:	1,
+				duration			:	750,
+				fx					:	'scroll'
+			},
+			pagination				:	
+			{
+				anchorBuilder		:	function() 
+				{
+					return($this.anchorBuilder($(this).parent('ul'),4));
+				},
+				container			:	function() 
+				{ 
+					return($(this).parents('#carousel-pricing').find('.pagination')); 
+				}
+			},
+			onCreate				:	function()
+			{
+				$this.setCarouselResponsive(carousel,columnWidth,margin);
+				$this.updateWaypoints();
+			}
+		});		
+	})
+};
+
+/******************************************************************************/
+
 
 Template.prototype.setCarouselResponsive=function(carousel,columnWidth,margin)
 {	
@@ -1151,4 +1218,4 @@ Template.prototype.createParallax=function()
 };
 
 /******************************************************************************/
-/******************************************************************************/
+/***************************************************************************/

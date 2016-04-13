@@ -1,6 +1,6 @@
 <?php 
 include("simple-php-captcha.php"); $_SESSION['captcha'] = simple_php_captcha(); ?>
-<?php require_once('include/navigation_bar_subpages.php'); ?>
+<?php require_once('include/navigation_bar.php'); ?>
 		<div class="section-background-color section-background-color-2">
 		
 			<div class="main" style="text-align:left;">
@@ -84,8 +84,8 @@ width:100%;
       $url .= "content_template_url=https://grouca.com/payment.php&";
       $url .= "action=buildForm&";
 if(isset($_SESSION['UserName'])){$url .= "customer_email=".$_SESSION['UserName']."&";}
-   $uniqid = $prefix . uniqid();
-   $uniqid = uniqid($prefix);
+   //$uniqid = $prefix . uniqid();
+   $uniqid = uniqid(rand(), true);
       $url .= "sessionId=".$uniqid."&";
       $url .= "payment_type=Credit_Card&";
       $url .= "formType=1&";

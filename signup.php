@@ -32,18 +32,18 @@ if(isset($_POST['continue_off'])) {
             && ($_POST['security_code'] == $captcha)
         ) {
             include("base.php");
-            $user_email = mysql_real_escape_string($_POST['user_email']);
-            $user_password_hash = md5(mysql_real_escape_string($_POST['user_password_new']));
+            $user_email = $mysqli->real_escape_string($_POST['user_email']);
+            $user_password_hash = md5($mysqli->real_escape_string($_POST['user_password_new']));
             $sql = "SELECT * FROM users WHERE user_email = '" . $user_email . "';";
-            $query_check_user_name = mysql_query($sql);
+            $query_check_user_name = $mysqli->query($sql);
 
-                 if(mysql_num_rows($query_check_user_name) == 1){
+                 if($query_check_user_name->num_rows == 1){
                     $errors .= "Sorry, that email address is already in use.";
                 } else {
                     // write new user's data into database
                     $sql = "INSERT INTO users (user_password_hash, user_email, JoinDate, AccountType, Subscribed)
                             VALUES('" . $user_password_hash . "', '" . $user_email . "', CURDATE(), 'Trial', '1');";
-                    $query_new_user_insert = mysql_query($sql);
+                    $query_new_user_insert = $mysqli->query($sql);
 
                     // if user has been added successfully
                     if ($query_new_user_insert) {
@@ -82,4 +82,4 @@ require_once('include/header.php');
 
 			</ul>
 
-			<?php require_once('include/contact_footer.php'); ?>
+			<?php require_once('include/footer.php'); ?>

@@ -23,4 +23,4 @@ require_once('include/header.php');
 
 			</ul>
 
-			<?php require_once('include/contact_footer.php'); ?>
+			<?php require_once('include/footer.php'); ?>

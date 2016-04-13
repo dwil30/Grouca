@@ -1,5 +1,5 @@
 <?php 
-require_once('include/navigation_bar_subpages.php');
+require_once('include/navigation_bar.php');
 include("base.php"); 
 function convertD ($date){
 return date('n/j/y', strtotime($date));
@@ -36,8 +36,9 @@ $sql_close = $mysqli->query("select s.* from positions s join (select *, max(Tim
                 <?php } ?>    
   					
 				</table>
-                 
-                <button class="button" href="sign.php" style="margin-top:15px;"><a href="http://grouca.com/sign.php">Sign Up For Free</a></button>
+                
+                 <a href="sign.php" class="bottom-button" style="display: block;margin: 20px auto;width: 248px;border-radius: 5px;background-color: #15a346;font-size: 26px;padding: 10px;color: white;">Sign Up For Free</a>
+            
 			</div>
 			
 		</div>

@@ -17,16 +17,12 @@
 					<!-- Slider -->
 					<div class="nivo-slider-box clear-fix">
 					
-						<div class="nivo-slider preloader">
+						<div class="nivo-slider">
 							<!-- Image #1 -->
-							<div class="preloader-image">
 								<img src="_sample/nivo_slider/image_01.jpg" alt=""/>
-							</div>
 							<!-- /Image #1 -->
 							<!-- Image #2 -->
-							<div class="preloader-image">
 								<img src="_sample/nivo_slider/image_02.jpg" alt=""/>
-							</div>
 							<!-- /Image #2 -->
 						</div>
 						

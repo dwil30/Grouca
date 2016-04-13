@@ -1,31 +1,28 @@
 <?php
 include('base.php');
-$sql = mysql_query("SELECT * FROM users");
+//Search for the users with the account type on Trial and the amount of days from subcription is 5
+$result = $mysqli->query("SELECT *, DATEDIFF(CURDATE(),`JoinDate`) AS days 
+                    FROM `users` 
+                    WHERE `AccountType`= 'Trial' and DATEDIFF(CURDATE(),`JoinDate`) = 5;");
 $email_list = array();
-while($row = mysql_fetch_array($sql)) {
-    $email = $row['user_email'];
-    $date1 = $row['JoinDate'];
-    $date2 = date('Y-m-d');
-    $diff = abs(strtotime($date2) - strtotime($date1));
-    $years = floor($diff / (365*60*60*24));
-    $months = floor(($diff - $years * 365*60*60*24) / (30*60*60*24));
-    $days = floor(($diff - $years * 365*60*60*24 - $months*30*60*60*24)/ (60*60*24));
-    if ($days > 2.9 && $days < 4){
-        $to = $email;
-        array_push($email_list, $to);
-        $subject = $headers = $message = '';    
-        $subject = 'GROUCA TRIAL SPECIAL UPGRADE';
-        $headers = "From: support@grouca.com\r\n";
-        $headers .= "Reply-To: support@grouca.com\r\n";
-        $headers .= "Return-Path: support@grouca.com\r\n";
-        $headers .= "MIME-Version: 1.0\r\n";
-        $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-        
-        // PREPARE THE BODY OF THE MESSAGE
+while($row = $result->fetch_assoc()) {
 
-        $message = '<html><body>';
-        $message .= '<img src="http://grouca.com/images/blue_without_circle.jpg" alt="Grouca Logo">';
-        $message .= '<br><br><div style="color:#1559D6;"><b>WE INVITE YOU TO UPDATE YOUR MEMBERSHIP.</b></div><br><br> Thank you for signing up for Grouca. We&#39;d like to extend a special offer to you to make subscribing even easier. For a limited time, we&#39;re making our already low monthly fee even lower.<br><br>
+    $email = $row['user_email'];
+    $to = $email;
+    array_push($email_list, $to);
+    $subject = $headers = $message = '';    
+    $subject = 'GROUCA TRIAL SPECIAL UPGRADE';
+    $headers = "From: support@grouca.com\r\n";
+    $headers .= "Reply-To: support@grouca.com\r\n";
+    $headers .= "Return-Path: support@grouca.com\r\n";
+    $headers .= "MIME-Version: 1.0\r\n";
+    $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+    
+    // PREPARE THE BODY OF THE MESSAGE
+
+    $message = '<html><body>';
+    $message .= '<img src="http://grouca.com/images/blue_without_circle.jpg" alt="Grouca Logo">';
+    $message .= '<br><br><div style="color:#1559D6;"><b>WE INVITE YOU TO UPDATE YOUR MEMBERSHIP.</b></div><br><br> Thank you for signing up for Grouca. We&#39;d like to extend a special offer to you to make subscribing even easier. For a limited time, we&#39;re making our already low monthly fee even lower.<br><br>
 
 Subscribe now and get access to the full Grouca service for just $79 per month (normally $99/month). That&#39;s 20% off our standard price—no long-term commitment required. You can cancel your subscription at any time. And there&#39;s a bonus: sign up now and get a one-on-one, private coaching session with our top trader ($200 value) for free!<br><br>
 
@@ -65,7 +62,7 @@ GROUCA | 4974 South Rainbow Blvd. | Suite 135 | Las Vegas | NV | 89118<br>
             $message .= "</body></html>";
 			mail($to, $subject, $message, $headers);
     }
-}
+
 if (empty($email_list)){
     $email = '';
     $to = 'support@grouca.com';
@@ -112,5 +109,4 @@ else {
     $to = 'support@grouca.com';
     mail($to, $subject, $message, $headers);
 }
-    
 ?>

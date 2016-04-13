@@ -67,29 +67,39 @@
     text-decoration:none;
 }
     
-            </style>    
-            <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
-			
+</style>    
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+
+
+  <div id="carousel-pricing">
+  
+    <div class="carousel-content"align="center">
+  
+      <!-- Pricing list -->
+      <ul class="clear-fix pricing-list layout-p-33x33x33" align="center">
+
+        <!-- Item #1 -->
+        <li class="column-left" align="center" id="slide">
           <div class="pricing">
-                <h4 class="header-h4">Free - 30 Day Trial</h4>
-                <div class="line-break"></div>
+                <h4 class="header-h4" >Free - 30 Day Trial</h4>
                 <h2 class="large-h2">Free</h2>
                  <div class="below-amount">Subscribe With Trial Profit </div>
                 <div class="item-text">Standard Monthly Plan</div>
                 <div class="line-break"></div>
-                <div class="item-text">Money-Back Guarantee</div>
+                <div class="item-text">Cancel at Any Time</div>
                 <div class="line-break"></div>
                 <div class="item-text">Notification Alerts</div>
-                <div class="line-break"></div>
+                <div class="line-break" ></div>
                 <div class="item-text">Highest Statistical Chance of Success</div>
               <div class="line-break"></div>
-              <a href="https://grouca.com/sign.php" class="bottom-button">Sign Up</a>
-              </div>
-              <div class="pricing">
-                <h4 class="header-h4">Monthly</h4>
-                <div class="line-break"></div>
-                <h2 class="large-h2">$99</h2>
-                <div class="below-amount">per month</div>
+              <a href="https://www.grouca.com/sign.php" class="bottom-button">Sign Up</a>
+          </div>
+        </li>
+        <li class="column-center-left" align="center" id="slide">
+          <div class="pricing">
+                <h4 class="header-h4" >Monthly</h4>
+                <h2 class="large-h2" >$99</h2>
+                <div class="below-amount" >per month</div>
                 <div class="item-text">Standard Monthly Plan</div>
                 <div class="line-break"></div>
                 <div class="item-text">Money-Back Guarantee</div>
@@ -98,10 +108,12 @@
                 <div class="line-break"></div>
                 <div class="item-text">Highest Statistical Chance of Success</div>
                 <div class="line-break"></div>
-                <a href="https://grouca.com/signupforgrouca.php?price=monthly" class="bottom-button">Sign Up</a>
-            </div>
-            
-            <!--<div class="clear-fix section-background-color section-background-color-1 margin-top-80"></div>-->
-            
-		</div>
-    
+                <a href="https://www.grouca.com/signupforgrouca.php?price=monthly" class="bottom-button">Sign Up</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="pagination pagination-pricing-list clear-fix"></div>
+
+            <!--<div class="clear-fix section-background-color section-background-color-1 margin-top-80"></div>--> 
+</div><br>

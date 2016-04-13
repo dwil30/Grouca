@@ -1,6 +1,6 @@
 <?php 
 include("simple-php-captcha.php"); $_SESSION['captcha'] = simple_php_captcha(); ?>
-<?php require_once('include/navigation_bar_subpages.php'); ?>
+<?php require_once('include/navigation_bar.php'); ?>
 		<div class="section-background-color section-background-color-2">
 		
 			<div class="main" style="text-align:left;">
@@ -46,11 +46,16 @@ include("simple-php-captcha.php"); $_SESSION['captcha'] = simple_php_captcha(); 
                                     <?php } ?>
                                     
                                     <?php if (empty($_SESSION['LoggedIn'])) : ?>
-                                    <p class="subheader" style="margin-left: 0px;">Create New Profile or <a href='log.php'>Log In</a></h1>
+                                    <p class="subheader" style="margin-left: 0px;">Create New Profile or 
+                                    <?php if ((isset($_GET['discount'])) and ($_GET['discount'] == 'grouca1')){ ?>
+                                    	<a href='log.php?discount=grouca1'>Log In</a></h1>
+                                    <?php } else { ?>
+                                    	<a href='log.php?discount=normal'>Log In</a></h1>
+                                    <?php } ?>
 									<li>
 										<div class="block field-box">
                                             <label for="email">Email Address</label>
-									      <input type="email" class="w-input email-text" id="email" name="user_email" value="<?php echo isset($_POST['user_email']) ? $_POST['user_email']: ''; ?>" required>		
+									        <input type="email" class="w-input email-text" id="email" name="user_email" value="<?php echo isset($_POST['user_email']) ? $_POST['user_email']: ''; ?>" required>		
 										</div>
 									</li>
 								

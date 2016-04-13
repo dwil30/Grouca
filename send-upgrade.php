@@ -3,20 +3,20 @@
     $to = $email;
     $subject = $headers = $message = '';    
     $subject = 'WELCOME TO GROUCA';
-        
-        $headers = "From: support@grouca.com\r\n";
-        $headers .= "Reply-To: support@grouca.com\r\n";
-        $headers .= "Return-Path: support@grouca.com\r\n";
-        $headers .= "MIME-Version: 1.0\r\n";
-        $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-        
-        // PREPARE THE BODY OF THE MESSAGE
-	
-			$message .= '<img src="http://grouca.com/images/blue_without_circle.jpg" alt="Grouca Logo"><br><br>';
-            $message .= '<strong><div style="font-size: 14px;color: rgb(21,89,214)">WELCOME TO THE GROUCA</div></strong><br>';
-            $message .= 'Thank you for upgrading your membership. We’re happy you’re here. We’ll give you a call soon to schedule your free private coaching session with our top trader ($200 value).<br><br>';
 
-            $message .= 'If you have any questions at the moment, please do not hesitate to contact us at support@grouca.com.<br><br>';
+    $headers = "From: support@grouca.com\r\n";
+    $headers .= "Reply-To: support@grouca.com\r\n";
+    $headers .= "Return-Path: support@grouca.com\r\n";
+    $headers .= "MIME-Version: 1.0\r\n";
+    $headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
+
+    // PREPARE THE BODY OF THE MESSAGE
+
+    $message .= '<img src="http://grouca.com/images/blue_without_circle.jpg" alt="Grouca Logo"><br><br>';
+    $message .= '<strong><div style="font-size: 14px;color: rgb(21,89,214)">WELCOME TO THE GROUCA</div></strong><br>';
+    $message .= 'Thank you for upgrading your membership. We’re happy you’re here. We’ll give you a call soon to schedule your free private coaching session with our top trader ($200 value).<br><br>';
+
+    $message .= 'If you have any questions at the moment, please do not hesitate to contact us at support@grouca.com.<br><br>';
     $message .= 'Sincerely,<br>Maurice Lichten<br>
 Managing Director<br><br>
 
