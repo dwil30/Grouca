@@ -14,8 +14,8 @@ return date('n/j/y', strtotime($date));
     <?php
         //echo '<p id="closed" class="loginheadline" style="font-size: 23px;"><b>Closed Positions</b></p>';
 
-         $sql_close = mysql_query("select s.* from positions s join (select *, max(Date) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.date = ss.maxdate where s.Status = 'Closed' ORDER BY DATE DESC ;");
-        if(mysql_num_rows($sql_close)> 0){
+         $sql_close = $mysqli->query("select s.* from positions s join (select *, max(Date) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.date = ss.maxdate where s.Status = 'Closed' ORDER BY DATE DESC ;");
+        if(mysqli_num_rows($sql_close)> 0){
             echo '<table id="adjustment">
         <tr><thead id="thead">
             <th>Date</th>
@@ -24,7 +24,7 @@ return date('n/j/y', strtotime($date));
             <th>Trade</th>
             <th>Change</th>
         </tr><tbody> ';  
-            while ($row = mysql_fetch_assoc($sql_close)) {
+            while ($row = $sql_close->fetch_assoc()) {
                 echo '<tr>
         <td data-th="Date:">'.convertD($row['Date']).'</td>
         <td data-th="Stock:">'.$row['Stock'].'</td> 
@@ -58,7 +58,7 @@ else {echo '<p>There are currently no closed positions.</p>';}
       <div class="w-container">
         <div class="w-row">
           <div class="w-col w-col-6 copyright">
-            <p class="copyright-text">© 2014 Grouca&nbsp;</p>
+            <p class="copyright-text">© 2016 Grouca&nbsp;</p>
           </div>
           <div class="w-col w-col-6">
             <div class="team-icons footer">
