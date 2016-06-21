@@ -20,25 +20,28 @@ if(isset($_POST['Open']))
 if(isset($_POST['Change'])) 
 {   
     include("connect.php"); 
-    $email = mysqli_real_escape_string($_POST['user']);
-    $join = mysqli_real_escape_string($_POST['join']);
-    $status = mysqli_real_escape_string($_POST['status']);
-    $sub = mysqli_real_escape_string($_POST['subscribe']);
-    $phone= mysqli_real_escape_string($_POST['phone']);
+    $email = $mysqli->real_escape_string($_POST['user']);
+    $join = $mysqli->real_escape_string($_POST['join']);
+    $status = $mysqli->real_escape_string($_POST['status']);
+    $sub = $mysqli->real_escape_string($_POST['subscribe']);
+    $phone= $mysqli->real_escape_string($_POST['phone']);
             $phone = str_replace("-","",$phone);
             $phone = str_replace(".","",$phone);
             $phone = str_replace("/","",$phone);
             $phone = str_replace("(","",$phone);
             $phone = str_replace(")","",$phone);
             $phone = str_replace(" ","",$phone);
-    $carrier = mysqli_real_escape_string($_POST['carrier']);
+    $carrier = $mysqli->real_escape_string($_POST['carrier']);
     
     if ($status == 'Delete'){
     $sql_update = $mysqli->query("DELETE FROM users Where user_email='".$email."'");
     }
     else {
-    $sql_update = $mysqli->query("UPDATE users SET user_email='".$email."',JoinDate='".$join."',AccountType = '".$status."', Subscribed = '".$sub."', Phone = '".$phone."', Carrier = '".$carrier."'
-    WHERE user_id = '".$_SESSION['ID'] ."'");
+        
+    $query = "UPDATE users SET user_email='".$email."',JoinDate='".$join."',AccountType = '".$status."', Subscribed = '".$sub."', Phone = '".$phone."', Carrier = '".$carrier."'
+    WHERE user_id = '".$_SESSION['ID'] ."'";
+      
+    $sql_update = $mysqli->query($query);
     }
      echo '<div style="color:red;">User Successfully Update.</div>'; 
       $_SESSION['Update'] = null;
@@ -101,8 +104,8 @@ th, td, tr {
         </tr>    
     <?php 
     include("connect.php");
-    $sql_users = mysql_query("SELECT * FROM users");
-    while ($row = mysql_fetch_assoc($sql_users)){
+    $sql_users = $mysqli->query("SELECT * FROM users");
+    while ($row = $sql_users->fetch_assoc()){
         echo'
         <tr>
             <td><input type="radio" name="group1" value="'.$row['user_id'].'"></td>  

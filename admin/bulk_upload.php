@@ -194,7 +194,7 @@ if(isset($_POST['final'])){
             if (!in_array($val[5], $_SESSION['trackID'])){
             
         $sql_insert = $mysqli->query("INSERT INTO positions (Title, Status, Stock, Price, Sell, PriceSell, Sell2, PriceSell2, Buy, PriceBuy, Buy2, PriceBuy2, Gain, Loss, Margin, Notes, Date, Action, Trade, SetPrice) VALUES('" . $val[8] . "','New', '" . $val[5] . "', '" . $val[6]. "','" . $val[2] . " x ". $val[4] ."', '". $val[3] . "','','','', '','','','" . $val[9]. "','" . $val[10]. "','" . $val[11] . "','" . $val[12]. "','" . $val[0]. "','" . $val[13]. "','" . $val[14]. "','')");
-        $sql_tradeID =   $mysqli->query"UPDATE positions SET TradeID = ID WHERE TradeID = 0;");  
+        $sql_tradeID =   $mysqli->query("UPDATE positions SET TradeID = ID WHERE TradeID = 0;");  
         
         include('send-new.php');    
         array_push($_SESSION['trackID'], $val[5]);
@@ -229,7 +229,7 @@ if(isset($_POST['final'])){
         elseif (($val[7] == 'New')&&($val[1] == 'Buy')){
             if (!in_array($val[5], $_SESSION['trackID'])){
         $sql_insert = $mysqli->query("INSERT INTO positions (Title, Status, Stock, Price, Sell, PriceSell, Sell2, PriceSell2, Buy, PriceBuy, Buy2, PriceBuy2, Gain, Loss, Margin, Notes, Date, Action, Trade, SetPrice) VALUES('" . $val[8] . "','New', '" . $val[5] . "', '" . $val[6]. "','', '','','','" . $val[2] . " x ". $val[4] ."', '". $val[3] . "','','','" . $val[9]. "','" . $val[10]. "','" . $val[11] . "','" . $val[12]. "','" . $val[0]. "','" . $val[13]. "','" . $val[14]. "','')");
-        $sql_tradeID =   $mysqli->query("UPDATE positions SET TradeID = ID WHERE TradeID = 0;");  
+        $sql_tradeID = $mysqli->query("UPDATE positions SET TradeID = ID WHERE TradeID = 0;");  
      
         include('send-new.php');   
         array_push($_SESSION['trackID'], $val[5]);
@@ -441,10 +441,10 @@ th, td, tr {
             echo "<td>".$price_array[$key]."</td>"; 
             
            $sql = 'SELECT * FROM (SELECT * FROM positions Where Stock = "'.$stock.'" ORDER BY DATE DESC) AS foo GROUP BY TradeID;';
-           $history = mysql_query($sql);
+           $history = $mysqli->query($sql);
            echo "<td><select id='dropdown' class='".$key."' name='new[".$key."]'><option value='New'>New</option>";
            $y=0;
-           while ($lookup = mysql_fetch_assoc($history)){
+           while ($lookup = $history->fetch_assoc()){
                if ($lookup['Status'] != 'Closed'){
                    $y=1;
                    echo '<option value='.$lookup['TradeID'].'>'.$lookup['Stock']. ' - '.date("m/d/Y", strtotime($lookup['Date'])).'</option>';
