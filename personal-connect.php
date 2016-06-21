@@ -24,9 +24,9 @@ if(isset($_POST['continue'])) {
             && ($_POST['security_code'] == $captcha)
         ) {
             include("base.php");
-            $user_email = mysqli_real_escape_string($_POST['user_email']);
-            $user_password_hash = md5(mysqli_real_escape_string($_POST['user_password_new']));
-            $phone =  mysqli_real_escape_string($_POST['tel']);
+            $user_email = $mysqli->real_escape_string($_POST['user_email']);
+            $user_password_hash = md5($mysqli->real_escape_string($_POST['user_password_new']));
+            $phone =  $mysqli->real_escape_string($_POST['tel']);
             $phone = str_replace("-","",$phone);
             $phone = str_replace(".","",$phone);
             $phone = str_replace("/","",$phone);

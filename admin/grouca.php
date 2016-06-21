@@ -66,22 +66,22 @@ if(isset($_POST['Post']))
       include("connect.php");  
       $price = $_SESSION['price'];
       $ticker = $_SESSION['ticker'];
-      $title = mysqli_real_escape_string($_POST['title']);
-      $sell = mysqli_real_escape_string($_POST['sell']);
-      $sell2= mysqli_real_escape_string($_POST['sell2']);
-      $buy = mysqli_real_escape_string($_POST['buy']);
-      $buy2= mysqli_real_escape_string($_POST['buy2']);
-      $price1 = mysqli_real_escape_string(clean($_POST['price1']));
-      $price2= mysqli_real_escape_string(clean($_POST['price2']));
-      $price3 = mysqli_real_escape_string(clean($_POST['price3']));
-      $price4= mysqli_real_escape_string(clean($_POST['price4']));
-      $gain = mysqli_real_escape_string(clean($_POST['gain']));
-      $loss= mysqli_real_escape_string(clean($_POST['loss']));
-      $margin = mysqli_real_escape_string(clean($_POST['margin']));
-      $notes= mysqli_real_escape_string($_POST['notes']);
-      $action= mysqli_real_escape_string($_POST['action']);
-      $trade= mysqli_real_escape_string($_POST['trade']);
-      $setprice = mysqli_real_escape_string(clean($_POST['setprice']));    
+      $title = $mysqli->real_escape_string($_POST['title']);
+      $sell = $mysqli->real_escape_string($_POST['sell']);
+      $sell2= $mysqli->real_escape_string($_POST['sell2']);
+      $buy = $mysqli->real_escape_string($_POST['buy']);
+      $buy2= $mysqli->real_escape_string($_POST['buy2']);
+      $price1 = $mysqli->real_escape_string(clean($_POST['price1']));
+      $price2= $mysqli->real_escape_string(clean($_POST['price2']));
+      $price3 = $mysqli->real_escape_string(clean($_POST['price3']));
+      $price4= $mysqli->real_escape_string(clean($_POST['price4']));
+      $gain = $mysqli->real_escape_string(clean($_POST['gain']));
+      $loss= $mysqli->real_escape_string(clean($_POST['loss']));
+      $margin = $mysqli->real_escape_string(clean($_POST['margin']));
+      $notes= $mysqli->real_escape_string($_POST['notes']);
+      $action= $mysqli->real_escape_string($_POST['action']);
+      $trade= $mysqli->real_escape_string($_POST['trade']);
+      $setprice = $mysqli->real_escape_string(clean($_POST['setprice']));    
       $sql_insert =  $mysqli->query("INSERT INTO positions (Title, Status, Stock, Price, Sell, PriceSell, Sell2, PriceSell2, Buy, PriceBuy, Buy2, PriceBuy2, Gain, Loss, Margin, Notes, Date, Action, Trade, SetPrice) VALUES('" . $title . "','New', '" . $ticker . "', '" . $price. "','" . $sell . "','" . $price1 . "','" . $sell2 . "','" . $price2. "','" . $buy. "', '" . $price3. "','" . $buy2. "','" . $price4. "','" . $gain. "','" . $loss. "','" . $margin . "','" . $notes. "',CURDATE(),'" . $action. "','" . $trade. "','" . $setprice. "')") or die(mysqli_error());
       $sql_tradeID =   $mysqli->query("UPDATE positions SET TradeID = ID WHERE TradeID = 0;");  
       echo '<div style="color:red;">New Post Successfully Created</div>';
@@ -118,7 +118,7 @@ if(isset($_POST['Closed']))
 if(isset($_POST['Change'])) 
 {   
     include("connect.php"); 
-    $status = mysqli_real_escape_string($_POST['up_status']);
+    $status = $mysqli->real_escape_string($_POST['up_status']);
     
     if ($status == 'Delete'){
          
@@ -128,25 +128,25 @@ if(isset($_POST['Change']))
     }
     else
 {
-        $sell = mysqli_real_escape_string($_POST['up_sell']);
-        $buy = mysqli_real_escape_string($_POST['up_buy']); 
+        $sell = $mysqli->real_escape_string($_POST['up_sell']);
+        $buy = $mysqli->real_escape_string($_POST['up_buy']); 
         $price = $_SESSION['price'];
-        $ticker = mysqli_real_escape_string($_POST['up_ticker']);
-        $title = mysqli_real_escape_string($_POST['up_title']);
-        $sell2= mysqli_real_escape_string($_POST['up_sell2']);
-        $buy2= mysqli_real_escape_string($_POST['up_buy2']);
-        $price1 = mysqli_real_escape_string(clean($_POST['up_price1']));
-        $price2 = mysqli_real_escape_string(clean($_POST['up_price2']));
-        $price3 = mysqli_real_escape_string(clean($_POST['up_price3']));
-        $price4 = mysqli_real_escape_string(clean($_POST['up_price4']));
-        $gain = mysqli_real_escape_string(clean($_POST['up_gain']));
-        $loss= mysqli_real_escape_string(clean($_POST['up_loss']));
-        $margin = mysqli_real_escape_string(clean($_POST['up_margin']));
-        $notes= mysqli_real_escape_string($_POST['up_notes']);
-        $action= mysqli_real_escape_string($_POST['up_action']);
-        $trade= mysqli_real_escape_string($_POST['up_trade']);
-        $setPrice = mysqli_real_escape_string(clean($_POST['up_setprice'])); 
-        $change = mysqli_real_escape_string($_POST['up_change']);
+        $ticker = $mysqli->real_escape_string($_POST['up_ticker']);
+        $title = $mysqli->real_escape_string($_POST['up_title']);
+        $sell2= $mysqli->real_escape_string($_POST['up_sell2']);
+        $buy2= $mysqli->real_escape_string($_POST['up_buy2']);
+        $price1 = $mysqli->real_escape_string(clean($_POST['up_price1']));
+        $price2 = $mysqli->real_escape_string(clean($_POST['up_price2']));
+        $price3 = $mysqli->real_escape_string(clean($_POST['up_price3']));
+        $price4 = $mysqli->real_escape_string(clean($_POST['up_price4']));
+        $gain = $mysqli->real_escape_string(clean($_POST['up_gain']));
+        $loss= $mysqli->real_escape_string(clean($_POST['up_loss']));
+        $margin = $mysqli->real_escape_string(clean($_POST['up_margin']));
+        $notes= $mysqli->real_escape_string($_POST['up_notes']);
+        $action= $mysqli->real_escape_string($_POST['up_action']);
+        $trade= $mysqli->real_escape_string($_POST['up_trade']);
+        $setPrice = $mysqli->real_escape_string(clean($_POST['up_setprice'])); 
+        $change = $mysqli->real_escape_string($_POST['up_change']);
     if (($_SESSION['results']['Status'] == $status) and ($_SESSION['results']['Sell'] == $sell) and ($_SESSION['results']['Buy'] == $buy)) 
     {
         $sql_update = "UPDATE positions 

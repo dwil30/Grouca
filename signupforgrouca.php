@@ -37,8 +37,8 @@ if(isset($_POST['continue_off'])) {
             && ($_POST['security_code'] == $captcha)
         ) {
             include("base.php");
-            $user_email = mysqli_real_escape_string($_POST['user_email']);
-            $user_password_hash = md5(mysqli_real_escape_string($_POST['user_password_new']));
+            $user_email = $mysqli->real_escape_string($_POST['user_email']);
+            $user_password_hash = md5($mysqli->real_escape_string($_POST['user_password_new']));
             $sql = "SELECT * FROM users WHERE user_email = '" . $user_email . "';";
             $query_check_user_name = $mysqli->query($sql);
 
