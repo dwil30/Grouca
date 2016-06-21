@@ -23,12 +23,12 @@ th, td, tr {
             <div class="form-signin2"> 
             <p class="loginheadline" style="font-size: 23px;"><b>New Trade</b></p>';
         include("base.php"); 
-         $buy2 = mysql_query("select s.* from positions s join (select *, max(Date) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.date = ss.maxdate where s.Status = 'New' and s.Buy2 != ''");
-         $buy2_number = mysql_num_rows($buy2);
-        $sell2 = mysql_query("select s.* from positions s join (select *, max(Date) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.date = ss.maxdate where s.Status = 'New' and s.Sell2 != ''");
-         $sell2_number = mysql_num_rows($sell2);
-        $sql_query= mysql_query("select s.* from positions s join (select *, max(Date) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.date = ss.maxdate where s.Status = 'New'");
-        $number = mysql_num_rows($sql_query);
+         $buy2 = $mysqli->query("select s.* from positions s join (select *, max(Date) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.date = ss.maxdate where s.Status = 'New' and s.Buy2 != ''");
+         $buy2_number = mysqli_num_rows($buy2);
+        $sell2 = $mysqli->query("select s.* from positions s join (select *, max(Date) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.date = ss.maxdate where s.Status = 'New' and s.Sell2 != ''");
+         $sell2_number = mysqli_num_rows($sell2);
+        $sql_query= $mysqli->query("select s.* from positions s join (select *, max(Date) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.date = ss.maxdate where s.Status = 'New'");
+        $number = mysqli_num_rows($sql_query);
         if ($number > 0){ 
                     echo '<table id="history"><thead id="thead"> 
         <tr>
@@ -45,7 +45,7 @@ th, td, tr {
             <th>Max Loss</th>
             <th>Notes</th>
             </tr><tbody>';
-              while ($item = mysql_fetch_assoc($sql_query)){
+              while ($item = $sql_query->fetch_assoc()){
          echo '<tr>
         <td data-th="Title:">'.$item['Title'].'</td>
         <td data-th="Stock - Price:">'.$item['Stock'].' - '.$item['Price'].'</td>
@@ -67,9 +67,9 @@ th, td, tr {
         
 echo '  <p class="loginheadline" style="font-size: 23px;"><b>Adjustment Manager</b></p>';
 
-          //  $open = mysql_query("select s.* from positions s join (select *, max(Date) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.date = ss.maxdate where s.Status not in ('New','Closed') ORDER BY s.date DESC;");
+          //  $open = $mysqli->query("select s.* from positions s join (select *, max(Date) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.date = ss.maxdate where s.Status not in ('New','Closed') ORDER BY s.date DESC;");
 
-    $open = mysql_query("SELECT * 
+    $open = $mysqli->query("SELECT * 
 FROM (
 
 SELECT * 
@@ -79,7 +79,7 @@ ORDER BY TIMESTAMP DESC
 GROUP BY TradeID
 ORDER BY DATE DESC");
 $header = $count = 0;
-  while ($row = mysql_fetch_assoc($open)) {
+  while ($row = $open->fetch_assoc()) {
                 if (($row['Status'] != 'Closed') and ($row['Status'] != 'New')){
                 $count = 1;
                 if ($header == 0) {
@@ -151,8 +151,8 @@ Interactive Brokers - Best for commission and for trade execution. <a href="http
 
 <?php
         echo '<p id="closed" class="loginheadline" style="font-size: 23px;"><b>Closed Positions</b></p>';
-         $sql_close = mysql_query("select s.* from positions s join (select *, max(Timestamp) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.Timestamp = ss.maxdate where s.Status = 'Closed' ORDER BY Timestamp DESC;");
-        if(mysql_num_rows($sql_close)> 0){
+         $sql_close = $mysqli->query("select s.* from positions s join (select *, max(Timestamp) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.Timestamp = ss.maxdate where s.Status = 'Closed' ORDER BY Timestamp DESC;");
+        if(mysqli_num_rows($sql_close)> 0){
             echo '<table id="adjustment">
         <tr><thead id="thead">
             <th>Date</th>
@@ -161,7 +161,7 @@ Interactive Brokers - Best for commission and for trade execution. <a href="http
             <th>Trade</th>
             <th>Change</th>
         </tr><tbody> ';  
-            while ($row = mysql_fetch_assoc($sql_close)) {
+            while ($row = $sql_close->fetch_assoc()) {
                 echo '<tr>
         <td data-th="Date:">'.convertD($row['Date']).'</td>
         <td data-th="Stock:">'.$row['Stock'].'</td> 
