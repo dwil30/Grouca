@@ -31,18 +31,18 @@ $number = $sql_query->num_rows;
                         <th>Title</th>
                         <th>Stock - Price</th>
                         <th>Action</th>
-                        <th>Trade</th>';
-                        echo '<th>Buy</th>';
-                        if ($buy2_number > 0){echo '<th>Buy2</th>';}
-                        echo '<th>Sell</th>';
-                        if ($sell2_number > 0){echo '<th>Sell2</th>';}
-                        echo '
+                        <th>Trade</th>
+                        <th>Buy</th>
+                        <?php if ($buy2_number > 0){echo '<th>Buy2</th>';}?>
+                        <th>Sell</th>
+                        <?php if ($sell2_number > 0){echo '<th>Sell2</th>';} ?>
                         <th>Target Gain</th>
                         <th>Max Loss</th>
                         <th>Notes</th>
                     </tr>
                     <tbody>
-                    <?php while ($item = $sql_query->fetch_assoc()) { ?>
+                    <?php while ($item = $sql_query->fetch_assoc()) { 
+            echo '
                     <tr>
                         <td data-th="Title:">'.$item['Title'].'</td>
                         <td data-th="Stock - Price:">'.$item['Stock'].' - '.$item['Price'].'</td>
@@ -57,8 +57,8 @@ $number = $sql_query->num_rows;
                         <td data-th="Target Gain:">'.$item['Gain'].'</td> 
                         <td data-th="Max Loss:">'.$item['Loss'].'</td>
                         <td data-th="Notes:">'.$item['Notes'].'</td>
-                        </tr>
-                    <?php } ?>
+                        </tr>';
+                   } ?>
                     </tbody></table><br>
                     <?php }           
                     else {echo '<p>There are currently no new trades.</p>';} ?>
