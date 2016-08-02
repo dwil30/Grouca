@@ -97,9 +97,9 @@ if(isset($_POST['submit'])){
     foreach ($import as $key => $value){
         if (!in_array_r($value[5], $stocks))
         {
-            $quote = file_get_contents('http://finance.google.co.uk/finance/info?client=ig&q='.$value[5]);
-            if (empty($quote))
-            {
+            $stock_ticker = strstr($value[5], '.', true);
+            $quote = file_get_contents('http://finance.google.co.uk/finance/info?client=ig&q='.$stock_ticker);
+            if (empty($quote)) {
                 $price_array[] = 'Not Found'; 
                 array_push($stocks, array($value[5], 'Not Found')); 
             }
@@ -182,33 +182,36 @@ if(isset($_POST['final'])){
     $_SESSION['trackID'] = array();
     $_SESSION['adjustID'] = array();
     
-   
     foreach ($_SESSION['final'] as $val){
         $error=$ignore=0;
         
-        if ($val[7] == 'Ignore')
-        {$ignore = 1;}
+        if ($val[7] == 'Ignore'){$ignore = 1;}
         
         //NEW TRADE AND MARKED SELL 
         if (($val[7] == 'New')&&($val[1] == 'Sell')){
             if (!in_array($val[5], $_SESSION['trackID'])){
             
         $sql_insert = $mysqli->query("INSERT INTO positions (Title, Status, Stock, Price, Sell, PriceSell, Sell2, PriceSell2, Buy, PriceBuy, Buy2, PriceBuy2, Gain, Loss, Margin, Notes, Date, Action, Trade, SetPrice) VALUES('" . $val[8] . "','New', '" . $val[5] . "', '" . $val[6]. "','" . $val[2] . " x ". $val[4] ."', '". $val[3] . "','','','', '','','','" . $val[9]. "','" . $val[10]. "','" . $val[11] . "','" . $val[12]. "','" . $val[0]. "','" . $val[13]. "','" . $val[14]. "','')");
-        $sql_tradeID =   $mysqli->query("UPDATE positions SET TradeID = ID WHERE TradeID = 0;");  
+                
+        $sql_tradeID = $mysqli->query("UPDATE positions SET TradeID = ID WHERE TradeID = 0;");  
         
-        include('send-new.php');    
+       include('send-new.php');    
         array_push($_SESSION['trackID'], $val[5]);
             }
             else {   
                 $sql = "SELECT ID, Sell, Sell2, Sell3, Sell4 FROM positions WHERE Stock = '".$val[5]."' ORDER BY TIMESTAMP DESC LIMIT 1;";
                 $check = $mysqli->query($sql);
                 while ($look = $check->fetch_assoc()){
-        
+    
                     if (strlen($look['Sell'] == 0 )){
-                        $sql_update = $mysqli->query("UPDATE positions SET Sell='" . $val[2] . " x ". $val[4] ."', PriceSell='" . $val[3]. "' WHERE ID = ".$look['ID'].";");
+                        $query = "UPDATE positions SET Sell='" . $val[2] . " x ". $val[4] ."', PriceSell='" . $val[3]. "' WHERE ID = ".$look['ID'].";";
+                        $sql_update = $mysqli->query($query);
+                        echo $query;
                     }
                     elseif (strlen($look['Sell2'] == 0 )){
-                        $sql_update = $mysqli->query("UPDATE positions SET Sell2='" . $val[2] . " x ". $val[4] ."', PriceSell2='" . $val[3]. "' WHERE ID = ".$look['ID'].";");
+                        $query = "UPDATE positions SET Sell2='" . $val[2] . " x ". $val[4] ."', PriceSell2='" . $val[3]. "' WHERE ID = ".$look['ID'].";";
+                        $sql_update = $mysqli->query($query);
+                        echo $query;
                     }
                      elseif (strlen($look['Sell3'] == 0 )){
                          $s = "UPDATE positions SET Sell3='" . $val[2] . " x ". $val[4] ."', PriceSell3='" . $val[3]. "' WHERE ID = ".$look['ID'].";";
@@ -229,16 +232,17 @@ if(isset($_POST['final'])){
         elseif (($val[7] == 'New')&&($val[1] == 'Buy')){
             if (!in_array($val[5], $_SESSION['trackID'])){
         $sql_insert = $mysqli->query("INSERT INTO positions (Title, Status, Stock, Price, Sell, PriceSell, Sell2, PriceSell2, Buy, PriceBuy, Buy2, PriceBuy2, Gain, Loss, Margin, Notes, Date, Action, Trade, SetPrice) VALUES('" . $val[8] . "','New', '" . $val[5] . "', '" . $val[6]. "','', '','','','" . $val[2] . " x ". $val[4] ."', '". $val[3] . "','','','" . $val[9]. "','" . $val[10]. "','" . $val[11] . "','" . $val[12]. "','" . $val[0]. "','" . $val[13]. "','" . $val[14]. "','')");
-        $sql_tradeID = $mysqli->query("UPDATE positions SET TradeID = ID WHERE TradeID = 0;");  
+        $sql_tradeID = $mysqli->query("UPDATE positions SET TradeID = ID WHERE TradeID = 0;");
      
-        include('send-new.php');   
+       include('send-new.php');   
         array_push($_SESSION['trackID'], $val[5]);
         }
               else {
                 $sql2 = $mysqli->query("SELECT ID, Buy, Buy2, Buy3, Buy4 FROM positions WHERE Stock = '".$val[5]."' ORDER BY TIMESTAMP DESC LIMIT 1;");
                 while ($look2 = $sql2->fetch_assoc()){
                     if (strlen($look2['Buy'] == 0 )){
-                        $sql_update = $mysqli->query("UPDATE positions SET Buy='" . $val[2] . " x ". $val[4] ."', PriceBuy='" . $val[3]. "' WHERE ID = ".$look2['ID'].";");
+                        $query_string = "UPDATE positions SET Buy='" . $val[2] . " x ". $val[4] ."', PriceBuy='" . $val[3]. "' WHERE ID = ".$look2['ID'].";";
+                        $sql_update = $mysqli->query($query_string);
                     }
                     elseif (strlen($look2['Buy2'] == 0 )){
                         $sql_update = $mysqli->query("UPDATE positions SET Buy2='" . $val[2] . " x ". $val[4] ."', PriceBuy2='" . $val[3]. "' WHERE ID = ".$look2['ID'].";");
@@ -478,6 +482,9 @@ th, td, tr {
     foreach($_SESSION['final'] as $k => $val){
         array_push($_SESSION['final'][$k], $price_array[$k]);
     }
+     if ($mysqli->error) {
+                printf("Errormessage: %s\n", $mysqli->error);
+            }
     ?>
  </table><br>
         <input class="w-button button-send" name="final" type="submit" value="Submit to Database" style="color:black;">  <br><br>
