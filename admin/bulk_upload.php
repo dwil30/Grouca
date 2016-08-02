@@ -1,5 +1,5 @@
 <?php 
-//error_reporting(-1); ini_set('display_errors','on');
+error_reporting(-1); ini_set('display_errors','on');
 session_start();
 include("connect.php");  
 
