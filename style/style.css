@@ -3265,3 +3265,21 @@ display: inline-block; width: 6rem;
         margin-left:10px!important;
     }
 }
+
+.alm-ib-background {
+   background-color: rgb(44,52,61);
+   color: white;
+}
+
+.alm-ib-message, .alm-ib-message-error {
+   background-color: rgb(19, 150, 65);
+   text-align:center;
+   padding: 20px;
+   font-size: large;
+   font-weight: bold;
+   color: white;
+}
+
+.alm-ib-message-error {
+    color: red;
+}

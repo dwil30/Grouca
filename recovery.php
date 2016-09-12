@@ -20,16 +20,16 @@ if(isset($_POST['submit']))
 	{
 		include("base.php");
 		$sqlquery="SELECT * from users where user_email='".$visitor_email."'";
-		$result = $mysqli->query($sqlquery);
+		$result = mysql_query($sqlquery);
 		if (!$result) {
 				$errors.="Something was wrong. Please try again.";
 				}
 		
-		if(mysqli_num_rows($result)==0){
+		if(mysql_num_rows($result)==0){
 			$errors.="The email is not present in our database.";
 			
 		}
-		$row = $result->fetch_array();
+		$row = mysql_fetch_array($result);
 		//all Ok -> save record
 		if(empty($errors))
 		{
@@ -43,7 +43,7 @@ if(isset($_POST['submit']))
 		}
 		
 		$sqlinsert="Update users set user_password_hash='".md5($code)."' where user_email='".$visitor_email."'";
-        $mysqli->query($sqlinsert);
+		mysql_query($sqlinsert);
 		
 		$from = 'support@grouca.com';
 		$to = $visitor_email;
@@ -53,7 +53,7 @@ if(isset($_POST['submit']))
 		
 		$errors.="<b style='color:green;'> An email with a new password was sent to ".$visitor_email."</b>";
 		}
-		mysqli_close($con);
+		mysql_close($con);
 	}
 }
 

@@ -551,6 +551,12 @@ textarea.w-select {
   border: 0;
   line-height: inherit;
 }
+
+.alm-ib-background {
+   background-color: black;
+   color: white;
+}
+
 .w-form-label {
   display: inline-block;
   cursor: pointer;

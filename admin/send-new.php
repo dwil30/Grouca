@@ -2,8 +2,8 @@
 session_start();
 include('connect.php');
 $emails = $phone = array();
-$sql = $mysqli->query("SELECT * FROM users");
-while ($row = $sql->fetch_assoc()){
+$sql = mysql_query("SELECT * FROM users");
+while($row = mysql_fetch_array($sql)) {
     
     if ($row['Subscribed'] == 1){
         
@@ -33,10 +33,9 @@ while ($row = $sql->fetch_assoc()){
 	
 			$message .= '<img src="http://grouca.com/images/blue_without_circle.jpg" alt="Grouca Logo"><br>';
             $message .= '<strong> Today&#39;s New Trade</strong><br><br>';
-            $sql_new = $mysqli->query("SELECT * FROM positions where Status='New' ORDER BY ID Desc Limit 1");
-            
-                if($sql_new->num_rows > 0){
-                    $new = $sql_new->fetch_assoc();
+            $sql_new = mysql_query("SELECT * FROM positions where Status='New' ORDER BY ID Desc Limit 1");
+                if(mysql_num_rows($sql_new) > 0){
+                    $new = mysql_fetch_assoc($sql_new);
                     $stock = $new['Stock'];
                     $gain = $new['Gain'];
             $message .= 'Grouca has generated a new trade on <b>'. $new['Stock'].'</b> with a target gain of <b>$'. $new['Gain'].'</b>.<br><br>';

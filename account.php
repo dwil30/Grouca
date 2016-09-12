@@ -1,8 +1,8 @@
-    <style>
+<style>
          @media only screen and (min-width:864px){
         #menu-selected {width: 50px !important;left: 730px !important;}
         }
-    </style>    
+</style>    
 
 <?php
 require_once('include/header.php');

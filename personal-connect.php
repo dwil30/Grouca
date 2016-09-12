@@ -24,9 +24,9 @@ if(isset($_POST['continue'])) {
             && ($_POST['security_code'] == $captcha)
         ) {
             include("base.php");
-            $user_email = $mysqli->real_escape_string($_POST['user_email']);
-            $user_password_hash = md5($mysqli->real_escape_string($_POST['user_password_new']));
-            $phone =  $mysqli->real_escape_string($_POST['tel']);
+            $user_email = mysql_real_escape_string($_POST['user_email']);
+            $user_password_hash = md5(mysql_real_escape_string($_POST['user_password_new']));
+            $phone =  mysql_real_escape_string($_POST['tel']);
             $phone = str_replace("-","",$phone);
             $phone = str_replace(".","",$phone);
             $phone = str_replace("/","",$phone);
@@ -35,15 +35,15 @@ if(isset($_POST['continue'])) {
             $phone = str_replace(" ","",$phone);
 
             $sql = "SELECT * FROM users WHERE user_email = '" . $user_email . "';";
-            $query_check_user_name = $mysqli->query($sql);
+            $query_check_user_name = mysql_query($sql);
 
-                 if(mysqli_num_rows($query_check_user_name) == 1){
+                 if(mysql_num_rows($query_check_user_name) == 1){
                     $errors .= "Sorry, that email address is already in use.";
                 } else {
                     // write new user's data into database
                     $sql = "INSERT INTO users (user_password_hash, user_email, JoinDate, AccountType, Subscribed, Phone)
                             VALUES('" . $user_password_hash . "', '" . $user_email . "', CURDATE(), 'Trial','1','" . $phone . "');";
-                    $query_new_user_insert = $mysqli->query($sql);
+                    $query_new_user_insert = mysql_query($sql);
 
                     // if user has been added successfully
                     if ($query_new_user_insert) {
