@@ -1,4 +1,5 @@
-<?
+<?php
+
 session_start();
 if($_POST['username']=="admin" && $_POST['pass']=="Sergio123!")
 	{
@@ -6,4 +7,5 @@ if($_POST['username']=="admin" && $_POST['pass']=="Sergio123!")
 	header( 'Location: grouca.php' ) ;
 	}
 else header( 'Location: error.html' ) ;
+
 ?>
