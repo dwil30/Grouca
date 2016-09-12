@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL);ini_set('display_errors', 1);
+
 $ibaccount = false;
 
 require_once 'ib-sendorderandverification.php';
@@ -41,51 +41,45 @@ if (isset($_POST['sendtoibbutton'])) {
 }
 ?>
 
-<?php
-require_once('include/navigation_bar.php');
-include("base.php");
-
-function convertD($date) {
-    return date('n/j/y', strtotime($date));
+<?php require_once('include/navigation_bar.php');
+include("base.php"); 
+function convertD ($date){
+return date('n/j/y', strtotime($date));
 }
 
-$buy2 = $mysqli->query("select s.* from positions s join (select *, max(Timestamp) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.Timestamp = ss.maxdate where s.Title = 'New Trade' and s.Buy2 != ''");
+
+$buy2 = $mysqli->query("select s.* from positions s join (select *, max(Timestamp) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.Timestamp = ss.maxdate where s.Status = 'New' and s.Buy2 != ''");
 $buy2_number = $buy2->num_rows;
-$sell2 = $mysqli->query("select s.* from positions s join (select *, max(Timestamp) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.Timestamp = ss.maxdate where s.Title = 'New Trade' and s.Sell2 != ''");
+$sell2 = $mysqli->query("select s.* from positions s join (select *, max(Timestamp) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.Timestamp = ss.maxdate where s.Status = 'New' and s.Sell2 != ''");
 $sell2_number = $sell2->num_rows;
-$sql_query = $mysqli->query("select s.* from positions s join (select *, max(Timestamp) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.Timestamp = ss.maxdate where s.Title = 'New Trade' ");
+$sql_query= $mysqli->query("select s.* from positions s join (select *, max(Timestamp) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.Timestamp = ss.maxdate where s.Status = 'New'");
 $number = $sql_query->num_rows;
 ?>
-
+    
 <?php require_once('include/navigation_bar.php'); ?>
+
 <div class="section-background-color section-background-color-2">
 
     <div class="main" style="text-align:center;width:auto;margin-left:15px;margin-right:15px;">
-
-        <!-- Header -->
         <h2 class="underline">
             <span>New Trade</span>
             <span></span>
         </h2>
-        <!-- /Header -->
-
         <?php if ($number > 0) { ?>
-            <table id="history"><thead id="thead"> 
+        <table id="history"><thead id="thead"> 
                     <tr>
                         <th>Title</th>
                         <th>Stock - Price</th>
                         <th>Action</th>
                         <th>Trade</th>
-                        <?php echo '<th>Buy</th>';
-                        if ($buy2_number > 0){echo '<th>Buy2</th>';}
-                        echo ('<th>Sell</th>');
-                        if ($sell2_number > 0){echo '<th>Sell2</th>';}
-                        echo ('
+                        <th>Buy</th>
+                        <?php if ($buy2_number > 0){echo '<th>Buy2</th>';} ?>
+                        <th>Sell</th>;
+                        <?php if ($sell2_number > 0){echo '<th>Sell2</th>';} ?>
                         <th>Target Gain</th>
                         <th>Max Loss</th>
                         <th>Notes</th>
-                        <th>Broker</th>');
-                        ?>
+                        <th>Broker</th>
                     </tr>
                 <tbody>
                     <?php while ($item = $sql_query->fetch_assoc()) {
@@ -143,7 +137,7 @@ $number = $sql_query->num_rows;
         $header = $count = 0;
         $status = "";
         while ($row = $open->fetch_assoc()) {
-            if (($row['Status'] != 'Closed') and ( $row['Title'] != 'New Trade')) {
+            if (($row['Status'] != 'Closed') and ( $row['Status'] != 'New')) {
                 $count = 1;
                 if ($row['Status'] == "In Trouble") {
                     $status = "Trouble";

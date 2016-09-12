@@ -84,7 +84,7 @@ th, td, tr {
                          $days_remaining = 'Expired';  
                          $sql = "UPDATE users SET AccountType ='Expired' WHERE user_email ='". $_SESSION['UserName']."'";
                          include("base.php");
-                         $query_update_status = mysql_query($sql) or die(mysql_error());
+                         $query_update_status = $mysqli->query($sql) or die(mysqli_error());
                          echo '<a class="w-nav-link button-login log3 phone" id="login" href="logout.php">Account Type:<b> '.$_SESSION['Account'].'</b><br>Days Remaining: <b>Expired</b></a>';
                         $_SESSION['Account'] == 'Expired';
                         }
@@ -112,25 +112,25 @@ return date('n/j/Y', strtotime($date));
 }
             $tradeID = $_GET["ID"]; 
             include("connect.php");  
-            $sql_history = mysql_query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' ORDER BY DATE DESC, TIMESTAMP DESC;");$i=0; $buy2=0; $sell2=0; $sell=0; $buy=0;
-$sql_sell = mysql_query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Sell)>1;");
-$sql_sell2 = mysql_query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Sell2)>1;");
-$sql_buy = mysql_query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Buy)>1;");
-$sql_buy2 = mysql_query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Buy2)>1;");
-$sql_sell3 = mysql_query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Sell3)>1;");
-$sql_sell4 = mysql_query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Sell4)>1;");
-$sql_buy3 = mysql_query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Buy3)>1;");
-$sql_buy4 = mysql_query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Buy4)>1;");
-if ($t1 = mysql_num_rows($sql_sell)>0){$sell=1;}
-if ($t2 = mysql_num_rows($sql_sell2)>0){$sell2=1;}
-if ($s1 = mysql_num_rows($sql_sell3)>0){$sell3=1;}
-if ($s2 = mysql_num_rows($sql_sell4)>0){$sell4=1;}
-if ($t3 = mysql_num_rows($sql_buy)>0){$buy=1;}
-if ($t4 = mysql_num_rows($sql_buy2)>0){$buy2=1;}
-if ($s3 = mysql_num_rows($sql_buy3)>0){$buy3=1;}
-if ($s4 = mysql_num_rows($sql_buy4)>0){$buy4=1;}
+            $sql_history = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' ORDER BY DATE DESC, TIMESTAMP DESC;");$i=0; $buy2=0; $sell2=0; $sell=0; $buy=0;
+$sql_sell = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Sell)>1;");
+$sql_sell2 = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Sell2)>1;");
+$sql_buy = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Buy)>1;");
+$sql_buy2 = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Buy2)>1;");
+$sql_sell3 = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Sell3)>1;");
+$sql_sell4 = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Sell4)>1;");
+$sql_buy3 = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Buy3)>1;");
+$sql_buy4 = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Buy4)>1;");
+if ($t1 = mysqli_num_rows($sql_sell)>0){$sell=1;}
+if ($t2 = mysqli_num_rows($sql_sell2)>0){$sell2=1;}
+if ($s1 = mysqli_num_rows($sql_sell3)>0){$sell3=1;}
+if ($s2 = mysqli_num_rows($sql_sell4)>0){$sell4=1;}
+if ($t3 = mysqli_num_rows($sql_buy)>0){$buy=1;}
+if ($t4 = mysqli_num_rows($sql_buy2)>0){$buy2=1;}
+if ($s3 = mysqli_num_rows($sql_buy3)>0){$buy3=1;}
+if ($s4 = mysqli_num_rows($sql_buy4)>0){$buy4=1;}
     
-            while ($new = mysql_fetch_assoc($sql_history)){
+            while ($new = $sql_history->fetch_assoc()){
                 switch ($i){
                     case 0:
                         echo '<table id="history" style="width:99%;table:1px solid black;tr:1px solid black;td:1px solid black;"><thead id="thead">  
@@ -185,7 +185,7 @@ if ($s4 = mysql_num_rows($sql_buy4)>0){$buy4=1;}
       <div class="w-container">
         <div class="w-row">
           <div class="w-col w-col-6 copyright">
-            <p class="copyright-text">© 2014 Grouca&nbsp;</p>
+            <p class="copyright-text">© 2016 Grouca&nbsp;</p>
           </div>
           <div class="w-col w-col-6">
             <div class="team-icons footer">

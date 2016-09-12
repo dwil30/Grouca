@@ -10,33 +10,38 @@ if(isset($_POST['Open']))
     $ID = $_POST['group1']; 
     $_SESSION['ID'] = $ID;
     include("connect.php");  
-    $sql_search = mysql_query("SELECT * FROM users WHERE user_id ='".$ID."'");
-    $users = mysql_fetch_assoc($sql_search);
+    
+    $sql_search = $mysqli->query("SELECT * FROM users WHERE user_id ='".$ID."'");
+    $users = $sql_search->fetch_assoc(); 
+    
      echo '<div style="color:red;">Record Found. See Update Position section below to update.</div>'; 
 }  
 
 if(isset($_POST['Change'])) 
 {   
     include("connect.php"); 
-    $email = mysql_real_escape_string($_POST['user']);
-    $join = mysql_real_escape_string($_POST['join']);
-    $status = mysql_real_escape_string($_POST['status']);
-    $sub = mysql_real_escape_string($_POST['subscribe']);
-    $phone= mysql_real_escape_string($_POST['phone']);
+    $email = $mysqli->real_escape_string($_POST['user']);
+    $join = $mysqli->real_escape_string($_POST['join']);
+    $status = $mysqli->real_escape_string($_POST['status']);
+    $sub = $mysqli->real_escape_string($_POST['subscribe']);
+    $phone= $mysqli->real_escape_string($_POST['phone']);
             $phone = str_replace("-","",$phone);
             $phone = str_replace(".","",$phone);
             $phone = str_replace("/","",$phone);
             $phone = str_replace("(","",$phone);
             $phone = str_replace(")","",$phone);
             $phone = str_replace(" ","",$phone);
-    $carrier = mysql_real_escape_string($_POST['carrier']);
+    $carrier = $mysqli->real_escape_string($_POST['carrier']);
     
     if ($status == 'Delete'){
-    $sql_update = mysql_query("DELETE FROM users Where user_email='".$email."'");
+    $sql_update = $mysqli->query("DELETE FROM users Where user_email='".$email."'");
     }
     else {
-    $sql_update = mysql_query("UPDATE users SET user_email='".$email."',JoinDate='".$join."',AccountType = '".$status."', Subscribed = '".$sub."', Phone = '".$phone."', Carrier = '".$carrier."'
-    WHERE user_id = '".$_SESSION['ID'] ."'");
+        
+    $query = "UPDATE users SET user_email='".$email."',JoinDate='".$join."',AccountType = '".$status."', Subscribed = '".$sub."', Phone = '".$phone."', Carrier = '".$carrier."'
+    WHERE user_id = '".$_SESSION['ID'] ."'";
+      
+    $sql_update = $mysqli->query($query);
     }
      echo '<div style="color:red;">User Successfully Update.</div>'; 
       $_SESSION['Update'] = null;
@@ -99,8 +104,8 @@ th, td, tr {
         </tr>    
     <?php 
     include("connect.php");
-    $sql_users = mysql_query("SELECT * FROM users");
-    while ($row = mysql_fetch_assoc($sql_users)){
+    $sql_users = $mysqli->query("SELECT * FROM users");
+    while ($row = $sql_users->fetch_assoc()){
         echo'
         <tr>
             <td><input type="radio" name="group1" value="'.$row['user_id'].'"></td>  
@@ -156,13 +161,13 @@ th, td, tr {
       
             
     <br><br></div></div>
- <?
+ <?php
 }
 else
 {
 ?>
                   <p>Select a user above to update</p>        
-                <?
+                <?php
 }
 ?>
  <div>
@@ -170,7 +175,7 @@ else
       <div class="w-container">
         <div class="w-row">
           <div class="w-col w-col-6 copyright">
-            <p class="copyright-text">© 2014 Grouca&nbsp;</p>
+            <p class="copyright-text">© 2016 Grouca&nbsp;</p>
           </div>
           <div class="w-col w-col-6">
             <div class="team-icons footer">

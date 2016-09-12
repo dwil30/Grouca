@@ -8,17 +8,18 @@ if(!isset($_SESSION['logged_in']) || ($_SESSION['logged_in']!="true"))
 
 if(isset($_POST['submit'])){
     
-    $MR = mysql_real_escape_string($_POST['MonthReg']);
-    $YR = mysql_real_escape_string($_POST['YearReg']);
-    $MD = mysql_real_escape_string($_POST['MonthDis']);
-    $YD = mysql_real_escape_string($_POST['YearDis']);
+    $MR = $mysqli->real_escape_string($_POST['MonthReg']);
+    $YR = $mysqli->real_escape_string($_POST['YearReg']);
+    $MD = $mysqli->real_escape_string($_POST['MonthDis']);
+    $YD = $mysqli->real_escape_string($_POST['YearDis']);
  
-$sql = mysql_query("Update prices Set MonthReg = ".$MR.", YearlyReg = ".$YR.", MonthlyDis = ".$MD.",  YearlyDis = ".$YD.";");
+$sql = $mysqli->query("Update prices Set MonthReg = ".$MR.", YearlyReg = ".$YR.", MonthlyDis = ".$MD.",  YearlyDis = ".$YD.";");
     $_SESSION['errors'] = "Prices Successfully Updated.";
 }
 
  
-$price =  mysql_fetch_assoc(mysql_query("SELECT * FROM prices"));
+$price_query = $mysqli->query("SELECT * FROM prices");
+$price = $price_query->fetch_assoc();
 
 
 ?>

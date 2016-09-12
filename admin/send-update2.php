@@ -1,8 +1,8 @@
 <?php
 session_start();
 include('connect.php');
-$sql = mysql_query("SELECT * FROM users");
-while($row = mysql_fetch_array($sql)) {
+$sql = $mysqli->query("SELECT * FROM users");
+while($row = $sql->fetch_array()) {
     $emails = array();
     
     if ($row['Subscribed'] == 1){
@@ -25,13 +25,13 @@ while($row = mysql_fetch_array($sql)) {
 	
 			$message .= '<img src="http://grouca.com/images/blue_without_circle.jpg" alt="Grouca Logo"><br>';
             $message .= '<strong> Today&#39;s New Adjustment</strong><br><br>';
-            $sql_new = mysql_query("select s.* from positions s join (select *, max(Date) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.date = ss.maxdate where s.TradeID = '" .$_SESSION['ID']. "';");
-                if(mysql_num_rows($sql_new) > 0){
-                    $new = mysql_fetch_assoc($sql_new);
+            $sql_new = $mysqli->query("select s.* from positions s join (select *, max(Date) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.date = ss.maxdate where s.TradeID = '" .$_SESSION['ID']. "';");
+                if(mysqli_num_rows($sql_new) > 0){
+                    $new = $sql_new->fetch_assoc();
             $message .= 'Grouca has generated a new <b>'. $new['Status'].'</b> adjustment for the <b>'.$new['Stock'].'</b> position.<br><br>';
 }
         
-     $message .= '<a href="http://grouca.com/services.php">Click Here To See Today&#39;s Adjustment Setup! </a><hr>';
+     $message .= '<a href="https://grouca.com/memb.php">Click Here To See Today&#39;s Adjustment Setup! </a><hr>';
       $message .= '<br>In the event our utility triggers an adjustment on an open position, Grouca will email subscribers an alert about the adjustment by noon.<br><br> ';
         $message .= 'Every adjustment includes: <br><br>';
     $message .= 'Detailed instructions on when to book a profit, how to leverage current gains higher, how to adjust trades to minimize risk, how to reverse losing positions to break even or back to gain status.<br><br>';

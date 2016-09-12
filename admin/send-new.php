@@ -2,8 +2,8 @@
 session_start();
 include('connect.php');
 $emails = $phone = array();
-$sql = mysql_query("SELECT * FROM users");
-while($row = mysql_fetch_array($sql)) {
+$sql = $mysqli->query("SELECT * FROM users");
+while ($row = $sql->fetch_assoc()){
     
     if ($row['Subscribed'] == 1){
         
@@ -33,15 +33,16 @@ while($row = mysql_fetch_array($sql)) {
 	
 			$message .= '<img src="http://grouca.com/images/blue_without_circle.jpg" alt="Grouca Logo"><br>';
             $message .= '<strong> Today&#39;s New Trade</strong><br><br>';
-            $sql_new = mysql_query("SELECT * FROM positions where Status='New' ORDER BY ID Desc Limit 1");
-                if(mysql_num_rows($sql_new) > 0){
-                    $new = mysql_fetch_assoc($sql_new);
+            $sql_new = $mysqli->query("SELECT * FROM positions where Status='New' ORDER BY ID Desc Limit 1");
+            
+                if($sql_new->num_rows > 0){
+                    $new = $sql_new->fetch_assoc();
                     $stock = $new['Stock'];
                     $gain = $new['Gain'];
             $message .= 'Grouca has generated a new trade on <b>'. $new['Stock'].'</b> with a target gain of <b>$'. $new['Gain'].'</b>.<br><br>';
 }
         
-    $message .= '<a href="http://grouca.com/services.php">Click Here To Enter Grouca and See Today&#39;s New Trade! </a><hr>';
+    $message .= '<a href="https://grouca.com/memb.php">Click Here To Enter Grouca and See Today&#39;s New Trade! </a><hr>';
     $message .= '<br>Each day Grouca&#39;s ranking algorithm searches for stocks that provide the highest statistical chances of success based on price momentum, fundamentals and option strategy. If it finds a candidate, it generates an alert to subscribers containing the new trade.<br><br>
 
 Every trade includes: <br><br>
@@ -88,7 +89,7 @@ GROUCA | 4974 South Rainbow Blvd. | Suite 135 | Las Vegas | NV | 89118<br>
 	foreach ($phone as $to) {
         if (strlen($to) > 1){ 
 		// Send a new outgoing SMS */
-		$body = "Grouca has generated a new trade on ".$stock." with a target gain of $".$gain.". Click Here To See Today's New trade! - https://grouca.com/services.php";
+		$body = "Grouca has generated a new trade on ".$stock." with a target gain of $".$gain.". Click Here To See Today's New trade! - https://grouca.com/memb.php";
 		$client->account->sms_messages->create($from, $to, $body);
 	}
     }

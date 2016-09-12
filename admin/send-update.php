@@ -1,8 +1,8 @@
 <?php
 session_start();
 include('connect.php');
-$sql = mysql_query("SELECT * FROM users");
-while($row = mysql_fetch_array($sql)) {
+$sql = $mysqli->query("SELECT * FROM users");
+while($row = $sql->fetch_array()) {
     $emails = array();
     if ($row['Subscribed'] == 1){
         $email = $row['user_email'];
@@ -25,13 +25,13 @@ while($row = mysql_fetch_array($sql)) {
 	
 			$message .= '<img src="http://grouca.com/images/blue_without_circle.jpg" alt="Grouca Logo"><br>';
             $message .= '<strong> Today&#39;s New Trade</strong><br><br>';
-            $sql_new = mysql_query("SELECT * FROM positions where Status='New' ORDER BY ID Desc Limit 1");
-                if(mysql_num_rows($sql_new) > 0){
-                    $new = mysql_fetch_assoc($sql_new);
+            $sql_new = $mysqli->query("SELECT * FROM positions where Status='New' ORDER BY ID Desc Limit 1");
+                if(mysqli_num_rows($sql_new) > 0){
+                    $new = $sql_new->fetch_assoc();
             $message .= 'Grouca has generated a new trade on <b>'. $new['Stock'].'</b> with a target gain of <b>'. $new['Gain'].'</b>.<br><br>';
 }
         
-     $message .= '<a href="http://grouca.com/services.php">Click Here To Enter Grouca and See Today&#39;s New Trade Setup! </a><hr>';
+     $message .= '<a href="https://grouca.com/memb.php">Click Here To Enter Grouca and See Today&#39;s New Trade Setup! </a><hr>';
       $message .= '<br>Each day before after the market opens, Grouca emails subscribers an alert containing the new option trade idea our utility has generate after evaluating the stocks that provides the highest statistical chances of success based on price momentum, fundamentals and option strategy.<br><br> ';
         $message .= 'Every trade includes: <br><br>';
     $message .= 'An option strategy, underling stock name and price, detailed instructions on how to place the order, what entry prices to use, target gain and risk profile. In addition our adjustment manager provides detailed introductions on when to book a profit, how to leverage current gains higher, how to adjust trades to minimize risk, how to reverse losing positions to break even or back to gain status.  <br><br>';

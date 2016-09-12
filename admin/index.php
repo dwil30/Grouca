@@ -60,7 +60,7 @@ Password: <input type="password" name="pass"><br>
       <div class="w-container">
         <div class="w-row">
           <div class="w-col w-col-6 copyright">
-            <p class="copyright-text">© 2014 Grouca&nbsp;</p>
+            <p class="copyright-text">© 2016 Grouca&nbsp;</p>
           </div>
           <div class="w-col w-col-6">
             <div class="team-icons footer">
