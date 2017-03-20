@@ -25,7 +25,7 @@
 		<script type="text/javascript" src="script/jquery.fancybox-buttons.js"></script>	
 		
 		<script type="text/javascript" src="plugin/contact-form/contact-form.js"></script>
-		
+	
 		<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>   
 		
 		<script type="text/javascript" src="script/template.class.js"></script>

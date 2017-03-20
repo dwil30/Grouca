@@ -38,13 +38,13 @@
 				
 				<!-- Right column -->
 				<div class="column-right">
-					<!--
+					
 					<h3>Grouca</h3>
 					
 					<p class="padding-top-30 padding-bottom-30">
 					As a leading provider of options strategies, Grouca makes it easy for you to instantly trade options, even on-the-go, with confidence. Developing the right options strategy takes time, a carefully honed financial skill set, and constant attention to timing. We have developed a trading system that zeroes in on trades with the highest statistical odds of success. This innovative technology leveraged with our expertise in the field, means that by the time you hear about a potential opportunity, we’ve already done 100 percent of the research and developed a winning strategy. We focus on getting you gains. You focus on what do with them.
 					</p>
-					-->
+					
                     
                     <h3 style="font-size:30px;">Sign Up for Free</h3>
 					

@@ -1,7 +1,10 @@
 <?php 
-//error_reporting(-1); ini_set('display_errors','on');
 session_start();
 include("connect.php");  
+
+function rndfunc($x){
+  return round($x,1);
+}
 
 if(!isset($_SESSION['logged_in']) || ($_SESSION['logged_in']!="true"))
 {header( 'Location: error.html' );}
@@ -55,7 +58,20 @@ if(isset($_POST['submit'])){
     if (($handle = fopen($myFile["tmp_name"], "r")) !== FALSE) {
         while (($data = fgetcsv($handle, 1000,',','"')) !== FALSE) {
             if (array(null) !== $data) {
-            $import[$row] = array((trim(isset($data[1]) ? $data[1]: '')),(trim(isset($data[3]) ? $data[3]: '')),(trim(isset($data[4]) ? $data[4]: '')),(trim(isset($data[7]) ? $data[7]: '')),(trim(isset($data[11]) ? $data[11]: '')),(trim(isset($data[14]) ? $data[14]: '')));
+            $import[$row] = array((trim(isset($data[1]) ? $data[1]: '')),
+                                  (trim(isset($data[3]) ? $data[3]: '')),
+                                  (trim(isset($data[4]) ? $data[4]: '')),
+                                  (trim(isset($data[5]) ? $data[5]: '')),
+                                  (trim(isset($data[6]) ? $data[6]: '')),
+                                  (trim(isset($data[7]) ? $data[7]: '')),
+                                  (trim(isset($data[8]) ? $data[8]: '')),
+                                  (trim(isset($data[9]) ? $data[9]: '')),
+                                  (trim(isset($data[10]) ? $data[10]: '')),
+                                  (trim(isset($data[11]) ? $data[11]: '')),
+                                  (trim(isset($data[12]) ? $data[12]: '')),
+                                  (trim(isset($data[13]) ? $data[13]: '')),
+                                  (trim(isset($data[14]) ? $data[14]: '')),
+                                  (trim(isset($data[15]) ? $data[15]: '')));
             $row++;}
         }
         fclose($handle);
@@ -69,19 +85,28 @@ if(isset($_POST['submit'])){
         }
         else {unset($import[$key]);}
     }
-    $import = array_values($import);
+
     
-    $import = json_decode(str_replace(".STK", "", json_encode($import)));
-    $import = json_decode(str_replace("Sel", "Sell", json_encode($import)));
+    $import = array_values($import);
+  
+    foreach ($import as $key => $value){
+        $import[$key][1] = str_replace("Sel", "Sell", $import[$key][1]);
+    }
+    
+    $import = str_replace(".STK", "", $import);
+    
+
     $_SESSSION['import'] = json_encode($import);
     $price_array = array();
     
     
+    //Put negative sign in front of Sell 
+    /*
     foreach ($import as $key => $value){
         if ($value[1] == 'Sell'){
             $import[$key][2] = '-'.$import[$key][2];
         }
-    }
+    }*/
     
     function in_array_r($needle, $haystack, $strict = false) {
         foreach ($haystack as $item) {
@@ -93,15 +118,18 @@ if(isset($_POST['submit'])){
     return false;
 }
     
+    
     $stocks = array();
     foreach ($import as $key => $value){
-        if (!in_array_r($value[5], $stocks))
+        
+        $symbol = substr($value[3], 0, strpos($value[3], ' '));
+        
+        if (!in_array_r($symbol, $stocks))
         {
-            $stock_ticker = strstr($value[5], '.', true);
-            $quote = file_get_contents('http://finance.google.co.uk/finance/info?client=ig&q='.$stock_ticker);
+            $quote = file_get_contents('http://finance.google.co.uk/finance/info?client=ig&q='.$symbol);
             if (empty($quote)) {
                 $price_array[] = 'Not Found'; 
-                array_push($stocks, array($value[5], 'Not Found')); 
+                array_push($stocks, array($symbol, 'Not Found')); 
             }
             else {
                 $json = str_replace("\n", "", $quote);
@@ -109,31 +137,76 @@ if(isset($_POST['submit'])){
                 $data = substr($json, 4, strlen($json) -5);
                 $json_output = json_decode($data, true);
                 $price = $json_output['l'];    
-                $price_array[]= $price;
-                array_push($stocks, array($value[5], $price));    
+                $import[$key][] = $price;
+                array_push($stocks, array($symbol, $price));   
             }
         }
         else 
         {
             foreach ($stocks as $target)
             {
-                if ($value[5] == $target[0])
+                if ($symbol == $target[0])
                 {
-                    $price_array[] = $target[1];
+                   $import[$key][] = $target[1];
                 }
             }
         }
     }
     
     foreach ($import as $key => $value){
+             
         $date = date_create_from_format('m/d/y', $import[$key][0]); 
         $import[$key][0] = date_format($date, 'Y/m/d');
+        
+        $var = $value[9];
+
+        $array = explode(" ",$var);
+
+        if (count($array) == 7){
+            array_splice($array, 5, 1);
+            $datearray = $array[1].' '.$array[2].' '.$array[3];
+            $new_date = date('ymd', strtotime($datearray));
+            $array[0] .= 'W'; //add W to weekly options
+        }
+        else {
+            $datearray = $array[1].' '.$array[2].' '.$array[3];
+            $new_date = date('ymd', strtotime('-1 day', strtotime($datearray)));
+        }
+
+        if ($array[5][0] == "P"){
+            $symbol='P';
+        }
+        else $symbol='C';
+        
+        $priceX1000 = $array[4] * 1000;
+     
+        $pad = str_pad($priceX1000, 8, "0", STR_PAD_LEFT);
+        
+        $code = str_pad($array[0], 6);  
+
+        $new_var = $code.$new_date.$symbol.$pad;
+
+        $import[$key][]= $new_var;
+        
+        $import[$key][5] = number_format(rndfunc($import[$key][5]), 2, '.', ',');
     }
+
+    $_SESSION['final'] = $import;
     
-    $colNames = array('Date','Buy or Sell','Quantity','for','Description','Stock','Price','New or Adjustment','Status','Title', 'Target Gain', 'Max Loss', 'Margin', 'Notes', 'Action','Trade');
+    $colNames = array('Date','Buy or Sell','Qty','for','Description','Stock','Price','New or Adjustment','Status','Title', 'Target Gain', 'Max Loss', 'Margin', 'Notes', 'Action','Trade');
 }
 
 if(isset($_POST['final'])){
+    
+        function in_array_r($needle, $haystack, $strict = false) {
+        foreach ($haystack as $item) {
+        if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
+            return true;
+        }
+    }
+
+    return false;
+}
     
     $target = $maxloss = $margin = $notes = $title = $new = $action = $trade = $status = array();
     $action = $_POST['action'];
@@ -149,14 +222,13 @@ if(isset($_POST['final'])){
     foreach ($new as $key => $value){
         array_push($_SESSION['final'][$key], $value);
     }
-    
     foreach ($title as $key => $value){
         array_push($_SESSION['final'][$key], $value);
     }
     foreach ($target as $key => $value){
         array_push($_SESSION['final'][$key], $value);
     }
-     foreach ($maxloss as $key => $value){
+    foreach ($maxloss as $key => $value){
         array_push($_SESSION['final'][$key], $value);
     }
      foreach ($margin as $key => $value){
@@ -165,11 +237,9 @@ if(isset($_POST['final'])){
      foreach ($notes as $key => $value){
         array_push($_SESSION['final'][$key], $value);
     }
-    
     foreach ($action as $key => $value){
         array_push($_SESSION['final'][$key], $value);
     }
-    
     foreach ($trade as $key => $value){
         array_push($_SESSION['final'][$key], $value);
     }
@@ -183,180 +253,76 @@ if(isset($_POST['final'])){
     $_SESSION['trackID'] = array();
     $_SESSION['adjustID'] = array();
     
+    $sent = $sent2 = 0;
+    
     foreach ($_SESSION['final'] as $val){
+        
         $error=$ignore=0;
         
-        if ($val[7] == 'Ignore'){$ignore = 1;}
+        if ($val[16] == 'Ignore'){$ignore = 1;}
         
-        //NEW TRADE AND MARKED SELL 
-        if (($val[7] == 'New')&&($val[1] == 'Sell')){
-            if (!in_array($val[5], $_SESSION['trackID'])){
+        //NEW TRADE
+        if ($val[16] == 'New'){
             
-        $sql_insert = $mysqli->query("INSERT INTO positions (Title, Status, Stock, Price, Sell, PriceSell, Sell2, PriceSell2, Buy, PriceBuy, Buy2, PriceBuy2, Gain, Loss, Margin, Notes, Date, Action, Trade, SetPrice) VALUES('" . $val[8] . "','New', '" . $val[5] . "', '" . $val[6]. "','" . $val[2] . " x ". $val[4] ."', '". $val[3] . "','','','', '','','','" . $val[9]. "','" . $val[10]. "','" . $val[11] . "','" . $val[12]. "','" . $val[0]. "','" . $val[13]. "','" . $val[14]. "','')");
+            $query = "INSERT INTO positions (Status, IBStatus, Title, Stock, Price, Type, Number, Code, Letter, LowerPrice, UpperPrice, HighPrice, FullCode, StockSymbol, IV, Gain, Loss, Margin, Notes, Action, Trade, Date, OptionSymbol, isCurrent) VALUES (
+            'New','Unprocessed','". $val[17]. "','". $val[12]. "','". $val[14]. "','". $val[1]. "','". $val[2]. "','". $val[3]. "','". $val[4]. "','". $val[5]. "','". $val[6]. "','". $val[7]. "','". $val[9]. "','". $val[12]. "','". $val[13]. "','". $val[18]. "','". $val[19]. "','". $val[20]. "','". $val[21]. "','". $val[22]. "','". $val[23]. "','". $val[0]. "','". $val[15]. "','1');";
+            
+            $sql_insert = $mysqli->query($query);
+            
+            if (in_array_r($val[12], $_SESSION['trackID'])){ //if stock is in array, update TradeID
                 
-        $sql_tradeID = $mysqli->query("UPDATE positions SET TradeID = ID WHERE TradeID = 0;");  
-        
-       include('send-new.php');    
-        array_push($_SESSION['trackID'], $val[5]);
+                foreach ($_SESSION['trackID'] as $item)
+                    {
+                        if ($val[12] == $item[0])
+                            {
+                            $sql_tradeID = $item[1];
+                            
+                            $upate_row = $mysqli->query("UPDATE positions SET TradeID = '".$sql_tradeID."' WHERE TradeID = 0;");  
+                            
+                            }
+                    }
             }
-            else {   
-                $sql = "SELECT ID, Sell, Sell2, Sell3, Sell4 FROM positions WHERE Stock = '".$val[5]."' ORDER BY TIMESTAMP DESC LIMIT 1;";
-                $check = $mysqli->query($sql);
-                while ($look = $check->fetch_assoc()){
-    
-                    if (strlen($look['Sell'] == 0 )){
-                        $query = "UPDATE positions SET Sell='" . $val[2] . " x ". $val[4] ."', PriceSell='" . $val[3]. "' WHERE ID = ".$look['ID'].";";
-                        $sql_update = $mysqli->query($query);
-                        //echo $query;
-                    }
-                    elseif (strlen($look['Sell2'] == 0 )){
-                        $query = "UPDATE positions SET Sell2='" . $val[2] . " x ". $val[4] ."', PriceSell2='" . $val[3]. "' WHERE ID = ".$look['ID'].";";
-                        $sql_update = $mysqli->query($query);
-                        //echo $query;
-                    }
-                     elseif (strlen($look['Sell3'] == 0 )){
-                         $s = "UPDATE positions SET Sell3='" . $val[2] . " x ". $val[4] ."', PriceSell3='" . $val[3]. "' WHERE ID = ".$look['ID'].";";
-                        $sql_update = $mysqli->query($s);
-                    }
-                     elseif (strlen($look['Sell4'] == 0 )){
-                        $sql_update = $mysqli->query("UPDATE positions SET Sell4='" . $val[2] . " x ". $val[4] ."', PriceSell4='" . $val[3]. "' WHERE ID = ".$look['ID'].";");
-                    }
-                    else {
-                        echo 'Error - More than 4 sell positions on a single upload.<br>';
-                        $error=1;
-                    }
-                } 
-            } 
-        }
-        
-           //NEW TRADE AND MARKED BUY 
-        elseif (($val[7] == 'New')&&($val[1] == 'Buy')){
-            if (!in_array($val[5], $_SESSION['trackID'])){
-        $sql_insert = $mysqli->query("INSERT INTO positions (Title, Status, Stock, Price, Sell, PriceSell, Sell2, PriceSell2, Buy, PriceBuy, Buy2, PriceBuy2, Gain, Loss, Margin, Notes, Date, Action, Trade, SetPrice) VALUES('" . $val[8] . "','New', '" . $val[5] . "', '" . $val[6]. "','', '','','','" . $val[2] . " x ". $val[4] ."', '". $val[3] . "','','','" . $val[9]. "','" . $val[10]. "','" . $val[11] . "','" . $val[12]. "','" . $val[0]. "','" . $val[13]. "','" . $val[14]. "','')");
-        $sql_tradeID = $mysqli->query("UPDATE positions SET TradeID = ID WHERE TradeID = 0;");
-     
-       include('send-new.php');   
-        array_push($_SESSION['trackID'], $val[5]);
-        }
-              else {
-                $sql2 = $mysqli->query("SELECT ID, Buy, Buy2, Buy3, Buy4 FROM positions WHERE Stock = '".$val[5]."' ORDER BY TIMESTAMP DESC LIMIT 1;");
-                while ($look2 = $sql2->fetch_assoc()){
-                    if (strlen($look2['Buy'] == 0 )){
-                        $query_string = "UPDATE positions SET Buy='" . $val[2] . " x ". $val[4] ."', PriceBuy='" . $val[3]. "' WHERE ID = ".$look2['ID'].";";
-                        $sql_update = $mysqli->query($query_string);
-                    }
-                    elseif (strlen($look2['Buy2'] == 0 )){
-                        $sql_update = $mysqli->query("UPDATE positions SET Buy2='" . $val[2] . " x ". $val[4] ."', PriceBuy2='" . $val[3]. "' WHERE ID = ".$look2['ID'].";");
-                       
-                    }
-                     elseif (strlen($look2['Buy3'] == 0 )){
-                        $sql_update = $mysqli->query("UPDATE positions SET Buy3='" . $val[2] . " x ". $val[4] ."', PriceBuy3='" . $val[3]. "' WHERE ID = ".$look2['ID'].";");
-                         
-                    }
-                     elseif (strlen($look2['Buy4'] == 0 )){
-                        $sql_update = $mysqli->query("UPDATE positions SET Buy4='" . $val[2] . " x ". $val[4] ."', PriceBuy4='" . $val[3]. "' WHERE ID = ".$look2['ID'].";");
-                    }
-                    else {
-                        echo 'Error - More than 4 Buy positions on a single upload.<br>';
-                        $error=1;
-                    }
-                }
+            else { //otherwise update TradeID to be ID
+                
+                $tradeID =  mysqli_fetch_row($mysqli->query("SELECT ID FROM positions WHERE TradeID = 0;")); 
+                $sql_tradeID = $mysqli->query("UPDATE positions SET TradeID = ID WHERE TradeID = 0;"); 
+                array_push($_SESSION['trackID'], array($val[12], $tradeID[0]));
+                
+            }
+            if ($sent == 0){
+                include('send-new.php');
+                $sent++;
             }
         }
-        
-        elseif (($val[7] != 'New')&&($val[1] == 'Sell')&&($val[7] != 'Ignore')){
-            if (!in_array($val[7], $_SESSION['adjustID'])){
-                
-                $sql = "INSERT INTO positions (TradeID, Title, Status, Stock, Price, Sell, PriceSell, Sell2, PriceSell2, Buy, PriceBuy, Buy2, PriceBuy2, Gain, Loss, Margin, Notes, Date, Action, Trade, SetPrice) VALUES('" . $val[7] . "','" . $val[8] . "','" . $val[15] . "', '" . $val[5] . "', '" . $val[6]. "','" . $val[2] . " x ". $val[4] ."', '". $val[3] . "','','','', '','','','" . $val[9]. "','" . $val[10]. "','" . $val[11] . "','" . $val[12]. "','" . $val[0]. "','" . $val[13]. "','" . $val[14]. "','')";
-               
-               $sql_insert = $mysqli->query("INSERT INTO positions (TradeID, Title, Status, Stock, Price, Sell, PriceSell, Sell2, PriceSell2, Buy, PriceBuy, Buy2, PriceBuy2, Gain, Loss, Margin, Notes, Date, Action, Trade, SetPrice) VALUES('" . $val[7] . "','" . $val[8] . "','" . $val[15] . "', '" . $val[5] . "', '" . $val[6]. "','" . $val[2] . " x ". $val[4] ."', '". $val[3] . "','','','', '','','','" . $val[9]. "','" . $val[10]. "','" . $val[11] . "','" . $val[12]. "','" . $val[0]. "','" . $val[13]. "','" . $val[14]. "','')");
-                
-                $sql2 = $mysqli->query("Select max(ID) as ID from positions where TradeID = '".$val[7]."';");
-                while ($ID = $sql2->fetch_assoc()){
-                $rowID = $ID['ID'];
-                }
-                
-                array_push($_SESSION['adjustID'], $val[7]);
-            }
-            else {   
-                $sql = "SELECT Sell, Sell2, Sell3, Sell4 FROM positions WHERE TradeID = '".$val[7]."' and ID = ".$rowID.";";
-                $check = $mysqli->query($sql);
-                while ($look = $check->fetch_assoc()){
-                    if (strlen($look['Sell'] == 0 )){
-                        $sql_update = $mysqli->query("UPDATE positions SET Sell='" . $val[2] . " x ". $val[4] ."', PriceSell='" . $val[3]. "' WHERE TradeID = '" . $val[7]. "' and ID = ".$rowID.";");
-                    }
-                    elseif (strlen($look['Sell2'] == 0 )){
-                        $sql_update = $mysqli->query("UPDATE positions SET Sell2='" . $val[2] . " x ". $val[4] ."', PriceSell2='" . $val[3]. "' WHERE TradeID = '" . $val[7]."' and ID = ".$rowID.";");
-                    }
-                     elseif (strlen($look['Sell3'] == 0 )){
-                         $s = "UPDATE positions SET Sell3='" . $val[2] . " x ". $val[4] ."', PriceSell3='" . $val[3]. "' WHERE TradeID = '" . $val[7]."' and ID = ".$rowID.";";
-                        $sql_update = $mysqli->query($s);
-                    }
-                     elseif (strlen($look['Sell4'] == 0 )){
-                        $sql_update = $mysqli->query("UPDATE positions SET Sell4='" . $val[2] . " x ". $val[4] ."', PriceSell4='" . $val[3]. "' WHERE TradeID = '" . $val[7]."' and ID = ".$rowID.";");
-                    }
-                    else {
-                        echo 'Error - More than 4 sell positions on a single upload.<br>';
-                        $error=1;
-                    }
-                } 
-            } 
-        }
+        //Adjustments
+        elseif (($val[16] != 'New')&&(($val[16] != 'Ignore'))) { 
+            
+                if (in_array_r($val[16], $_SESSION['adjustID'])){ //This TradeID has already been adjusted
                     
-            elseif (($val[7] != 'New')&&($val[1] == 'Buy')&&($val[7] != 'Ignore')){
-            if (!in_array($val[7], $_SESSION['adjustID'])){
-                $sql_insert = $mysqli->query("INSERT INTO positions (TradeID, Title, Status, Stock, Price, Sell, PriceSell, Sell2, PriceSell2, Buy, PriceBuy, Buy2, PriceBuy2, Gain, Loss, Margin, Notes, Date, Action, Trade, SetPrice) VALUES('" . $val[7] . "','" . $val[8] . "','" . $val[15] . "', '" . $val[5] . "', '" . $val[6]. "','', '','','','" . $val[2] . " x ". $val[4] ."', '". $val[3] . "','','','" . $val[9]. "','" . $val[10]. "','" . $val[11] . "','" . $val[12]. "','" . $val[0]. "','" . $val[13]. "','" . $val[14]. "','')");
-             
-                $sql3 = $mysqli->query("Select max(ID) as ID from positions where TradeID = '".$val[7]."';");
-                while ($ID3 = $sql3->fetch_assoc()){
-                $rowID = $ID3['ID'];
                 }
-                
-                array_push($_SESSION['adjustID'], $val[7]);
-            }
-            else {
-                
-                $sql2 = $mysqli->query("SELECT Buy, Buy2, Buy3, Buy4 FROM positions WHERE TradeID = '".$val[7]."' and ID = ".$rowID.";");
-                while ($look2 = $sql2->fetch_assoc()){
-                    if (strlen($look2['Buy'] == 0 )){
-                        $sql_update = $mysqli->query("UPDATE positions SET Buy='" . $val[2] . " x ". $val[4] ."', PriceBuy='" . $val[3]. "' WHERE TradeID = '" . $val[7]. "' and ID = ".$rowID.";");
-                    }
-                    elseif (strlen($look2['Buy2'] == 0 )){
-                        $sql_update = $mysqli->query("UPDATE positions SET Buy2='" . $val[2] . " x ". $val[4] ."', PriceBuy2='" . $val[3]. "' WHERE TradeID = '" . $val[7]. "' and ID = ".$rowID.";");
-                       
-                    }
-                     elseif (strlen($look2['Buy3'] == 0 )){
-                        $sql_update = $mysqli->query("UPDATE positions SET Buy3='" . $val[2] . " x ". $val[4] ."', PriceBuy3='" . $val[3]. "' WHERE TradeID = '" . $val[7]. "' and ID = ".$rowID.";");
-                         
-                    }
-                     elseif (strlen($look2['Buy4'] == 0 )){
-                        $sql_update = $mysqli->query("UPDATE positions SET Buy4='" . $val[2] . " x ". $val[4] ."', PriceBuy4='" . $val[3]. "' WHERE TradeID = '" . $val[7]."' and ID = ".$rowID.";");
-                    }
-                    else {
-                        echo 'Error - More than 4 Buy positions on a single upload.<br>';
-                        $error=1;
-                    }
+                else {
+                    
+                    $update_old_rows = $mysqli->query("UPDATE positions SET isCurrent = '0' WHERE TradeID = ".$val[16].";");
+                    
+                    array_push($_SESSION['adjustID'], array($val[16]));
+                    
                 }
-            }
-        }
-        
-        if ($ignore ==1){/* echo '<div style="color:red;">Row Ignored</div>' */;}
-        elseif ($error !=1){
+                    
+                $query = "INSERT INTO positions (TradeID, Status, IBStatus, Title, Stock, Price, Type, Number, Code, Letter, LowerPrice, UpperPrice, HighPrice, FullCode, StockSymbol, IV, Gain, Loss, Margin, Notes, Action, Trade, Date, OptionSymbol, isCurrent) VALUES ( '". $val[16]. "','". $val[24]. "','Unprocessed','". $val[17]. "','". $val[12]. "','". $val[14]. "','". $val[1]. "','". $val[2]. "','". $val[3]. "','". $val[4]. "','". $val[5]. "','". $val[6]. "','". $val[7]. "','". $val[9]. "','". $val[12]. "','". $val[13]. "','". $val[18]. "','". $val[19]. "','". $val[20]. "','". $val[21]. "','". $val[22]. "','". $val[23]. "','". $val[0]. "','". $val[15]. "','1');";
+                
             
-            echo '<div style="color:green;">Database Successfully Updated - ';
-            if ($val[7] == "New"){echo 'New';}
-            else {echo 'Adjustment';}
-            echo '</div>';
-        
-        }
+                $insert =  $mysqli->query($query);
+                    
+                if ($sent2 == 0){
+                    include('send-adjustment.php');
+                    $sent2++;
+                }
+            }
     }
-    if (count($_SESSION['adjustID'] > 0)){
-    foreach ($_SESSION['adjustID'] as $value){
-        $_SESSION['ID'] = $value;
-        include 'send-adjustment.php';
-    }
-    }
+    print_r('Database successfully updated');
+    
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -434,18 +400,15 @@ th, td, tr {
             
             $numItems = count($row);
             $i = 0;
-            array_push($_SESSION['final'], $row);
-
-            foreach ($row as $value){
-                echo "<td>".$value."</td>";
-                
-                if(++$i === $numItems) {
-                    $stock = $value; 
-                }
-            }
+           echo '<td>'.$row[0].'</td>';
+           echo '<td>'.$row[1].'</td>';
+           echo '<td>';if ($row[1] == 'Sell')echo '-'; echo $row[2].'</td>';
+           echo '<td>'.$row[5].'</td>';
+           echo '<td>'.$row[9].'</td>';
+           echo '<td>'.$row[12].'</td>';
+           echo '<td>'.$row[14].'</td>';
            
-                   
-            echo "<td>".$price_array[$key]."</td>"; 
+           $stock = $row[12];
             
            $sql = 'SELECT * FROM (SELECT * FROM positions Where Stock = "'.$stock.'" ORDER BY DATE DESC) AS foo GROUP BY TradeID;';
            $history = $mysqli->query($sql);
@@ -454,21 +417,43 @@ th, td, tr {
            while ($lookup = $history->fetch_assoc()){
                if ($lookup['Status'] != 'Closed'){
                    $y=1;
-                   echo '<option value='.$lookup['TradeID'].'>'.$lookup['Stock']. ' - '.date("m/d/Y", strtotime($lookup['Date'])).'</option>';
+                   echo '<option value='.$lookup['TradeID'].'>'.$lookup['Title'].'</option>';
+                       
+                       //. ' - '.date("m/d/Y", strtotime($lookup['Date']))
                 }
            }
            echo "<option value='Ignore' selected>Ignore</option></select></td>";
            if ($y==1){
-           echo "<td><select id='optionpick' class='".$key."' name='status[".$key."]' style='display:none;'><option value='In Trouble'>In Trouble</option><option value='At Risk'>At Risk</option><option value='Open'>Open</option></select></td>";
+           echo "<td><select id='optionpick' class='".$key."' name='status[".$key."]' style='display:none;'><option value='Adjust'>Adjust</option></td>";
            }
            else {echo '<td>New</td>';}
-           echo "<td><input style='width:80%;' type='text' name='title[".$key."]'></td>";
+           echo "<td><input class=".$key." style='width:80%;' type='text' name='title[".$key."]'></td>";
            echo "<td><input style='width:80%;' type='text' name='target[".$key."]'></td>";
            echo "<td><input style='width:80%;' type='text' name='maxloss[".$key."]'></td>";
            echo "<td><input style='width:80%;' type='text' name='margin[".$key."]'></td>";
-           echo "<td><select name='notes[".$key."]'><option value=''></option><option value='Adjust'>Adjust</option><option value='Adjust And Book Gain'>Adjust and book gain</option><option value='Adjust And Book Loss'>Adjust and book loss</option></select></td>";
-            echo "<td><select name='action[".$key."]'><option value=''></option><option value='Short'>Short</option><option value='Neutral'>Neutral</option><option value='Long'>Long</option><option value='Adjust'>Adjust</option></select></td>";
-            echo "<td><select name='trade[".$key."]'><option value=''></option><option value='Call Spread'>Call Spread</option><option value='Call'>Call</option><option value='Call Combo'>Call Combo</option><option value='Put Spread'>Put spread</option><option value='Put'>Put</option><option value='Put Combo'>Put Combo</option><option value='Combo'>Combo</option></select></td>";
+           echo "<td><input style='width:80%;' type='text' name='notes[".$key."]'></td>";
+           echo "<td><select name='action[".$key."]'>
+           <option value=''></option>
+           <option value='Buy'>Buy</option>
+           <option value='Sell'>Sell</option>
+           <option value='Close'>Close</option>
+           <option value='None'>None</option>
+           </select></td>";
+           echo "<td><select name='trade[".$key."]'>
+           <option value=''></option>
+           <option value='Single'>Single</option>
+           <option value='Backspread'>Backspread</option>
+           <option value='Straddle'>Straddle</option>
+           <option value='Strangle'>Strangle</option>
+           <option value='Butterfly'>Butterfly</option>
+           <option value='Calendar'>Calendar</option>
+           <option value='Vertical'>Vertical</option>
+           <option value='Backspread'>Backspread</option>
+           <option value='Condor'>Condor</option>
+           <option value='Iron Condor'>Iron Condor</option>
+           <option value='Diagonal'>Diagonal</option>
+           <option value='Custom'>Custom</option>
+           </select></td>";
            echo "</tr>";
            
            echo "<script>
@@ -481,10 +466,7 @@ th, td, tr {
 });
 </script>";
        }
-        
-    foreach($_SESSION['final'] as $k => $val){
-        array_push($_SESSION['final'][$k], $price_array[$k]);
-    }
+    
      if ($mysqli->error) {
                 printf("Errormessage: %s\n", $mysqli->error);
             }
@@ -503,5 +485,20 @@ th, td, tr {
         $('.button2').show(); 
     });
     </script>
+    <script> 
+    $('select').change(function(){
+        var className = $(this).attr('class');
+        var selection = $(this).val();
+        console.log(className);
+        console.log(selection);
+        if (selection != "Ignore"){
+            $("input."+className).prop('required',true);
+        }
+        else {
+            $("input."+className).prop('required',false);
+        }
+    }); 
+    </script>
+    
 </body>
 </html>

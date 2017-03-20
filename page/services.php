@@ -22,7 +22,9 @@
 						<li class="column-left">
 							<span class="icon icon-chart"></span>
 							<h4>The Right Trade</h4>
-							<p>The first step in successful options trading is pinpointing out how to model the right trade for the right outcome. When you receive a new trade alert, you’re getting a well-designed high probability trade delivered right to your inbox. We’ve done the research, so you don’t have to.</p>
+							<p class="desktop">The first step in successful options trading is modeling the right trade for the right outcome. When you receive a new trade alert, you’re getting a well-designed high probability trade in real time, delivered right to your inbox or phone. We’ve done the research, so you don’t have to. Then if you like the strategy risk reward, all you have to do is just click a button to submit your trade to your stockbroker.</p>
+                            <p class="mobile">
+                                The first step in successful options trading is modeling the right strategy for the right outcome. <br><br>When you receive a new trade alert, you’re getting a well-designed high probability trade in real time, delivered right to your inbox or phone. <br><br>We’ve done the research, so you don’t have to. Then if you like the risk reward, all you have to do is just click a button to submit your trade.</p>
 					
 							
 						</li>
@@ -46,7 +48,9 @@
 						<li class="column-left">
 							<span class="icon icon-signpost"></span>
 	<h4>Risk Management</h4>
-							<p>Every trade requires some rebalancing to deliver maximum gains. If a trade begins to deteriorate or needs to book gains, you need to know right away so you can act before things change. That’s why we monitor your trades continuously, and send you risk alerts the moment it becomes necessary. Each alert tells you exactly how to rebalance your trade for the desired outcome.</p>
+							<p class="desktop">Every option trade requires adjustments to deliver maximum gains or protect against losses. If a trade starts losing money and requires adjustments or its time to book your gains, you need to know right away so you can act. That’s why we monitor our trades continuously, and send you adjustment alerts the moment it becomes necessary. Each adjustment comes as a modeled strategy and ready for your stockbroker with just a click of a button.</p>
+                            
+                           <p class="mobile">Every option trade requires adjustments to deliver maximum gains or protect against losses.<br><br>If a trade requires adjustments to book gains or starts losing money, you need to know right away so you can act. <br><br>That’s why we monitor our trades continuously, and send you adjustment alerts the moment it becomes necessary. Each comes as a modeled strategy and ready to go.</p>
 				
 								</li>
 						<!-- /Entry #1 -->

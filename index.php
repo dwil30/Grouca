@@ -1,7 +1,5 @@
 		<?php require_once('include/header.php'); ?>
 
-		<body>
-
 			<ul class="page-list">
                     
 				<li class="page-home" id="page-home">

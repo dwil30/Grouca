@@ -1,32 +1,33 @@
 <?php require_once('include/navigation_bar.php');
 include("base.php"); 
+
 function convertD ($date){
-return date('n/j/y', strtotime($date));
+    return date('n/j/y', strtotime($date));
 }
 
-    $tradeID = $_GET["ID"]; 
-    include("base.php");
-    $i=0; $buy2=0; $sell2=0; $sell=0; $buy=0; $buy3=0; $sell3=0; $sell4=0; $buy4=0;
-    $sql_history = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' ORDER BY DATE DESC, TIMESTAMP DESC;");
-    $sql_sell = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Sell)>1;");
-    $sql_sell2 = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Sell2)>1;");
-    $sql_buy = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Buy)>1;");
-    $sql_buy2 = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Buy2)>1;");
-    $sql_sell3 = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Sell3)>1;");
-    $sql_sell4 = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Sell4)>1;");
-    $sql_buy3 = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Buy3)>1;");
-    $sql_buy4 = $mysqli->query("SELECT * FROM positions WHERE TradeID = '" . $tradeID . "' AND CHAR_LENGTH(Buy4)>1;");
-    if (($t1 = mysqli_num_rows($sql_sell)) >0){$sell=1;}
-    if (($t2 =mysqli_num_rows($sql_sell2)) >0){$sell2=1;}
-    if (($t3 =mysqli_num_rows($sql_sell3)) >0){$sell3=1;}
-    if (($t4 =mysqli_num_rows($sql_sell4)) >0){$sell4=1;}
-    if (($t5 =mysqli_num_rows($sql_buy)) >0 ){$buy=1;}
-    if (($t6 =mysqli_num_rows($sql_buy2)) >0){$buy2=1;}
-    if (($t7 =mysqli_num_rows($sql_buy3)) >0){$buy3=1;}
-    if (($t8 =mysqli_num_rows($sql_buy4)) >0){$buy4=1;}
+function in_array_r($needle, $haystack, $strict = false) {
+    foreach ($haystack as $item) {
+        if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
+            return true;
+        }
+    }
+    return false;
+}
+
+$tradeID = $_GET["ID"]; 
+include("base.php");
+
+$query = 'SELECT * , GROUP_CONCAT( 
+TYPE , Number, FullCode, LowerPrice
+SEPARATOR  ";" ) as Options, max(Action) as Action, max(Trade) as Trade, max(Notes) as Notes, max(Gain) as Gain, max(Loss) as Loss 
+FROM positions
+WHERE TradeID = "' . $tradeID . '"
+GROUP BY UNIX_TIMESTAMP( TIMESTAMP ) DIV 400 
+ORDER BY TIMESTAMP DESC';
+
+$sql_history = $mysqli->query($query);
+
 ?>
-    
-<?php require_once('include/navigation_bar.php'); ?>
 		<div class="section-background-color section-background-color-2">
 		
 			<div class="main" style="text-align:center;width:95%;">
@@ -40,53 +41,168 @@ return date('n/j/y', strtotime($date));
 				</h2>
 				<!-- /Header -->
                 <?php 
-                 while ($new = $sql_history->fetch_assoc()){
-                    if ($new['Status'] == "In Trouble"){$status = "Trouble";}
-                    elseif ($new['Status'] == "At Risk"){$status = "Risk";} 
-                    switch ($i){
-                    case 0:
-                        echo '<table id="history" style="width:99%;table:1px solid black;tr:1px solid black;td:1px solid black;"><thead id="thead">  
-                                <tr><th>Date</th>
-                                    <th>Status</th>
-                                    <th>Stock - Price</th>
-                                    <th>Action</th>
-                                    <th>Trade</th>';
-                                               if ($buy ==1){echo '<th>Buy</th>';}
-                                    if ($buy2 ==1){echo'<th>Buy2</th>';}
-                                    if ($buy3 ==1){echo '<th>Buy3</th>';}
-                                    if ($buy4 ==1){echo'<th>Buy4</th>';}
-                                    if ($sell==1){echo '<th>Sell</th>';}
-                                    if ($sell2==1){echo'<th>Sell2</th>';}
-                                    if ($sell3==1){echo '<th>Sell3</th>';}
-                                    if ($sell4==1){echo'<th>Sell4</th>';}
+                
+                while ($new = $sql_history->fetch_assoc()){
 
-                                    echo '<th>Target Gain</th>
-                                    <th>Max Loss</th>
-                                    <th>Notes</th></tr><tbody>';
-                                        $i++;
-                                            case ($i > 0):
-        echo '<tr>
-          <td data-th="Date:">'.convertD($new['Date']).'</td>
-         <td data-th="Status:">'.$status.'</td>
-         <td data-th="Stock - Price:">'.$new['Stock'].' - '.$new['Price'].'</td> 
-         <td data-th="Action:">'.$new['Action'].'</td> 
-         <td data-th="Trade:">'.$new['Trade'].'</td>';
-                     if ($buy==1){echo '<td data-th="Buy:">'.$new['Buy'];} if(strlen($new['Buy'])>1){echo ' for '.$new['PriceBuy'].'</td>';}
-        if ($buy2==1){echo '<td data-th="Buy2:">'.$new['Buy2'];} if(strlen($new['Buy2'])>1){echo ' for '.$new['PriceBuy2'].'</td>';}
-        if ($buy3==1){echo '<td data-th="Buy3:">'.$new['Buy3'];} if(strlen($new['Buy3'])>1){echo ' for '.$new['PriceBuy3'].'</td>';}
-        if ($buy4==1){echo '<td data-th="Buy4:">'.$new['Buy4'];} if(strlen($new['Buy4'])>1){echo ' for '.$new['PriceBuy4'].'</td>';}
-        if ($sell==1){echo '<td data-th="Sell:">'.$new['Sell'];} if(strlen($new['Sell'])>1){echo ' for '.$new['PriceSell'].'</td>';}
-        if ($sell2==1){echo'<td data-th="Sell2:">'.$new['Sell2'];} if(strlen($new['Sell2'])>1){echo ' for '.$new['PriceSell2'].'</td>';}
-        if ($sell3==1){echo '<td data-th="Sell3:">'.$new['Sell3'];} if(strlen($new['Sell3'])>1){echo ' for '.$new['PriceSell3'].'</td>';}
-        if ($sell4==1){echo'<td data-th="Sell4:">'.$new['Sell4'];} if(strlen($new['Sell4'])>1){echo ' for '.$new['PriceSell4'].'</td>';}
-       
-         echo '<td data-th="Target Gain:">'.$new['Gain'].'</td> 
-         <td data-th=" Max Loss:">'.$new['Loss'].'</td>
-         <td data-th="Notes:">'.$new['Notes'].'</td></tr>';
-            }
-            }
-        echo '</table><br>';
+                 $history[] = array($new['Date'], $new['Status'], $new['Stock'].' - '.$new['Price'], $new['Action'], $new['Type'], $new['Number'], $new['FullCode'], $new['LowerPrice'], $new['Trade'], $new['Gain'], $new['Loss'], $new['Notes'], $new['Timestamp'],  $new['Options'], $new['Title']);
+                }
+            
                 ?>
+
+                <table id="history" style="width:99%;table:1px solid black;tr:1px solid black;td:1px solid black;">
+                    <thead id="thead">  
+                    <tr>
+                        <th>Date</th>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Stock - Price</th>
+                        <th>Action</th>
+                        <th>Trade</th>
+                        
+                        <?php $maxbuy = $maxsell = 0;
+                        foreach ($history as $item){
+                            $buy = $sell = 0;
+                            $temp = $item[13];
+                            if (strpos($temp, ';') !== false) {
+                                $temp = explode(';',$temp);
+
+                                foreach ($temp as $move){
+                                    if (substr($move, 0, 4) == "Sell"){$sell++;}
+                                    elseif (substr($move, 0, 3) == "Buy"){$buy++;}
+                                }    
+                            }
+                            else {
+                                if ($item[4] == "Buy"){$buy++;}
+                                elseif ($item[4] == "Sell"){$sell++;}        
+                            }
+                            if ($buy > $maxbuy){$maxbuy = $buy;}
+                            if ($sell > $maxsell){$maxsell = $sell;}      
+                        }
+                      
+                      
+                        for ($count = 0; $count < $maxbuy; $count++){
+                            if ($count > 0){$number = $count;}
+                            echo '<th>Buy'.$number.'</th>';
+                        }
+                         for ($count = 0; $count < $maxsell; $count++){
+                             if ($count > 0){$number2 = $count;}
+                            echo '<th>Sell'.$number2.'</th>';
+                        }
+                    
+                        ?>
+                        <th>Target Gain</th>
+                        <th>Max Loss</th>
+                        <th>Notes</th>
+                    </tr>
+                    </thead>    
+                    <tbody>
+                        <?php foreach ($history as $key => $item): ?>
+                        <tr>
+                            <td data-th="Date:"><?php echo convertD($item[0]); ?></td>
+                            <td data-th="Title:"><?php echo $item[14]; ?></td>
+                            <td data-th="Status:"><?php echo $item[1]; ?></td>
+                            <td data-th="Stock - Price:"><?php echo $item[2]; ?></td> 
+                            <td data-th="Action:"><?php echo $item[3]; ?></td>
+                            <td data-th="Trade:"><?php echo $item[8]; ?></td>
+                            <?php 
+                            $trades = $item[13];
+                            
+                            if($item[1]=='Open'){
+                               
+                                        for ($x = 0; $x < $buycount; $x++) {
+                                             echo '<td data-th="Buy:"></td>';
+                                       }
+                                        for ($x = 0; $x < $sellcount; $x++) {
+                                             echo '<td data-th="Sell:"></td>';
+                                       }  
+                            }
+                            else {
+                            if (strpos($trades, 'Puts') !== false) {
+                            $trades = str_replace("Puts","Puts for ",$trades);
+                            }
+                            else {$trades = str_replace("Put","Put for ",$trades);}
+    
+                            if (strpos($trades, 'Calls') !== false) {
+                            $trades = str_replace("Calls","Calls for ",$trades);
+                            }
+                            else {$trades = str_replace("Call","Call for ",$trades);}
+                                
+                            $trades = preg_replace('/(?<=[a-z])(?=\d)|(?<=\d)(?=[a-z])/i', ' ', $trades);
+                            
+                            if (strpos($trades, ';') !== false) {
+                                $trades = explode(';',$trades);
+                                sort($trades);
+                                
+                                $buycount = $sellcount = 0;
+                                
+                                   foreach ($trades as $move) {
+                                    
+                                        if (substr($move, 0, 3) == "Buy") {
+                                            $move = str_replace("Sell", "-", $move);
+                                            $move = str_replace("Buy", "", $move);
+                                            echo '<td data-th="Buy:">' . $move . '</td>';
+                                            $buycount++;
+                                        } elseif (substr($move, 0, 4) == "Sell") {
+                                            if ($buycount < $maxbuy) {
+                                                $diff = $maxbuy - $buycount;
+                                                for ($count = 0; $count < $diff; $count++) {
+                                                    echo '<td data-th="Buy:"></td>';
+                                                    $buycount++;
+                                                }
+                                            }
+                                            $move = str_replace("Sell", "-", $move);
+                                            $move = str_replace("Buy", "", $move);
+                                            echo '<td data-th="Sell:">' . $move . '</td>';
+                                            $sellcount++;
+                                        }
+                                     
+                                   }
+                          
+                                if ($sellcount < $maxsell){
+                                        echo '<td data-th="Sell:"></td>';
+                                        $sellcount++; 
+                                    }
+                            }
+                                else {
+                                    $buycount = $sellcount = 0;
+                                    
+                                    $trades = str_replace("Sell", "-", $trades);
+                                    $trades = str_replace("Buy", "", $trades);
+                                    if ($item[4] == "Buy") {
+                                        echo '<td data-th="Buy:">' . $trades . '</td>';
+                                        $buycount++;
+                                        
+                                          if ($buycount < $maxbuy) {
+                                                $diff = $maxbuy - $buycount;
+                                                for ($count = 0; $count < $diff; $count++) {
+                                                    echo '<td data-th="Buy:"></td>';
+                                                    $buycount++;
+                                                }
+                                          }
+                                        
+                                        for ($coun = 0; $coun < $maxsell; $coun++) {
+                                            echo '<td data-th="Sell:"></td>';
+                                        }
+                                    } elseif ($item[4] == "Sell") {
+                                        for ($coun = 0; $coun < $maxbuy; $coun++) {
+                                            echo '<td data-th="Buy:"></td>';
+                                        }
+                                        echo '<td data-th="Sell:">' . $trades . '</td>';
+                                    } else {
+                                        echo '<td></td>';
+                                    }
+                                }
+                 
+                            }
+                            ?>
+                     
+                            <td data-th="Target Gain:"><?php echo $item[9]; ?></td> 
+                            <td data-th="Max Loss:"><?php echo $item[10]; ?></td>
+                            <td data-th="Notes:"><?php echo $item[11]; ?></td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table><br>
           
 			</div>
 			

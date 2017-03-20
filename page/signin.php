@@ -1,6 +1,7 @@
 <?php
 
 require_once('include/navigation_bar.php'); 
+$price = $_GET['price'];
 
 ?>
 		<div class="section-background-color section-background-color-2">
@@ -34,6 +35,9 @@ require_once('include/navigation_bar.php');
 										<div class="block field-box">
 											<label for="contact-form-email">Email Address</label>
 											<input type="text" name="contact-form-email" id="contact-form-email" value=""/>
+                                            <?php if(isset($price)): ?>
+                                            <input type='hidden' value='<?php echo $price; ?>' name='price'>
+                                            <?php endif; ?>
 										</div>
 									</li>
 									<!-- /Name -->

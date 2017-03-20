@@ -6,6 +6,10 @@
 				<span>Meet Our Team</span>
 				<span></span>
 			</h2>
+            <p style="margin-bottom:50px;">
+                Our team works relentlessly to transform the way our members trade options so they can be successful in their investments.
+               <!-- Our team brings years of combined experience as option traders, strategists and modelers. We work relentlessly to transform the way our members trade options so they can be successful early in their investment career. -->
+					</p>
 			<!-- /Header -->
 			
 			<!-- Team members list -->
@@ -23,7 +27,7 @@
 							<!-- Image -->
 							<div class="image">
 								
-									<img src="images/MauriceGrouca.JPG" alt=""/>
+									<img src="images/profile.jpg" alt=""/>
 								
 								<div class="image-description">
 									<h5>Maurice Lichten</h5>
@@ -36,7 +40,7 @@
 							<ul class="social-list social-list-style-1">
                                 <li><a href="index.php#contact" class="social-list-email"></a></li>
 								<li><a href="#" class="social-list-facebook"></a></li>
-								<li><a href="#" class="social-list-twitter"></a></li>
+								<!--<li><a href="#" class="social-list-twitter"></a></li>-->
 							</ul>
 							<!-- /Social icon list -->
 							
@@ -53,7 +57,7 @@
 							
 							<!-- About -->
 							<p>
-								Maurice Lichten brings years of experience as an option modeler and as an educator bringing professional know how to our valued option trading clients.
+								Maurice Lichten brings years of experience as an option strategists and modeler bringing professional know how to our valued option trading clients.
 							</p>
 							<!-- /About -->
 							
@@ -84,7 +88,7 @@
 				<!-- /Entry #1 -->
 				
 				<!-- Entry #2 -->
-				<li>
+				<!--<li>
 					
 					<div class="layout-p-33x66 clear-fix">
 						
@@ -136,7 +140,7 @@
 						
 					</div>
 					
-				</li>
+				</li>-->
 				<!-- Entry #2 -->
 				
 			</ul>

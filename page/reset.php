@@ -1,4 +1,70 @@
-<?php require_once('include/navigation_bar.php'); ?>
+<?php 
+require_once('include/navigation_bar.php'); 
+require 'PHPMailer/PHPMailerAutoload.php';
+?>
+
+<?php 
+
+if ($_POST['contact-form-submit']){
+    
+$error = '';
+    
+$email = $_POST["contact-form-email"];
+    
+include("base.php");
+    
+$query = 'SELECT * FROM users Where user_email ="'.$email.'";'; 
+$sql_query = $mysqli->query($query);
+$number = $sql_query->num_rows;
+    
+if ($number == 0){$error = "No users found with that email address.";}
+else {
+    
+    function randomPassword() {
+    $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+    $pass = array(); //remember to declare $pass as an array
+    $alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+    for ($i = 0; $i < 8; $i++) {
+        $n = rand(0, $alphaLength);
+        $pass[] = $alphabet[$n];
+    }
+    return implode($pass); //turn the array into a string
+}
+    
+$newPass = randomPassword();
+$newPassMD5 = md5($newPass);
+    
+    
+$query = 'Update users Set user_password_hash = "'.$newPassMD5.'" where user_email ="'.$email.'";'; 
+    
+$sql_query = $mysqli->query($query);
+    
+ 
+    $mail = new PHPMailer;
+    $mail->isSMTP();
+    $mail->Host = 'smtp.zoho.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'support@grouca.com';
+    $mail->Password = 'Sergio123!';
+    $mail->SMTPSecure = 'ssl';
+    $mail->Port = 465;
+    $mail->setFrom('support@grouca.com');
+    $mail->addReplyTo('support@grouca.com');
+    $mail->addAddress($email);
+    $mail->isHTML(true);
+    $mail->Subject = '[GROUCA] Password Reset';
+    $mail->Body = '<html><body><img src="https://grouca.com/images/blue_without_circle.jpg" alt="Grouca Logo"><br>
+                <strong> Your new Grouca password</strong><br><br>
+              Hello Grouca User! Your password was successfully reset. <br><br> 
+              Your new Grouca password is: <b>'.$newPass.'</b><br><br>If you did not request a password reset please contact Grouca Support (support@grouca.com)</body></html>';
+    $mail->send();   
+
+$error = "Password successfully reset. Please check your email.";
+    
+}
+}
+?>
+
 		<div class="section-background-color section-background-color-2">
 		
 			<div class="main" style="text-align:left;">
@@ -19,7 +85,7 @@
 						
 					
 						<!-- Contact form -->
-						<form name="contact-form" id="contact-form" action="#" method="post" class="contact-form clear-fix">
+						<form action="" method="post">
 
 							<div class="clear-fix">
 
@@ -43,6 +109,9 @@
 									</li>
 									<!-- /Submit button -->
 								</ul>
+                                <?php if (strlen($error) > 1): ?>
+                                <p style="color:#822c2c;text-decoration:none;margin-left:12px;"><?php echo $error; ?></p>
+                                <?php endif; ?>
 
 							</div>
 

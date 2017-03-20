@@ -8,6 +8,9 @@ return date('n/j/y', strtotime($date));
 $sql_close = $mysqli->query("select s.* from positions s join (select *, max(Timestamp) as maxdate from positions s group by TradeID) ss on s.TradeID = ss.TradeID and s.Timestamp = ss.maxdate where s.Status = 'Closed' ORDER BY Timestamp DESC ;");
     
 ?>
+<style>
+    div.section-background-color {padding-bottom: 175px;}
+</style>
 
 		<div class="section-background-color section-background-color-2">
 		
@@ -24,7 +27,7 @@ $sql_close = $mysqli->query("select s.* from positions s join (select *, max(Tim
   						<th>Date</th>
   						<th>Symbol</th>
   						<th>Trade</th>
-   						<th>Change</th>
+   						<th>Annualized %</th>
   					</tr>
                 <?php while ($row = $sql_close->fetch_assoc()) { ?>    
   					<tr>

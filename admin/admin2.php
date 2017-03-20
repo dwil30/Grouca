@@ -1,4 +1,5 @@
 <?php
+session_start();
 if($_POST['username']=="admin" && $_POST['pass']=="Sergio123!")
 	{
 	$_SESSION['logged_in']="true";

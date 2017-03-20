@@ -1,4 +1,5 @@
 <?php
+
 if(isset($_POST['continue'])) {
         session_start();
         $errors ='';

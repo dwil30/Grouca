@@ -7,7 +7,7 @@
 					
 					<!-- Left column: copyright -->
 					<div class="column-left">
-						&copy; 2016  Grouca
+						&copy; 2017  Grouca
 					</div>
 					<!-- /Left column: copyright -->
 					
@@ -59,6 +59,20 @@
 		</div>		
 
 		<?php require_once('script_include.php'); ?>
+
+<!--<script>
+
+    $(function(){
+      // bind change event to select
+      $('#mobile-menu').on('change', function () {
+          var url = $(this).val(); // get selected value
+          if (url) { // require a URL
+              window.location = url; // redirect
+          }
+          return false;
+      });
+    });
+</script>-->
 	
 	</body>
 

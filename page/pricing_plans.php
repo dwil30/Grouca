@@ -19,12 +19,23 @@
   font-weight: 700;
      font-family: 'Source Sans Pro';
 }
+
             .header-h4 {
                 font-family: 'Source Sans Pro';
                 font-size: 26px;
                 line-height: 30px;
                 margin-bottom:18px;
             }
+            
+            .mobileonly {display:none;}
+
+@media screen and (max-width: 600px) {
+    .mobileonly {display:inline-block;}
+    .large-h2 {display:none;}
+    .below-amount {display:none;}
+    .header-h4 {font-size:20px;}
+}
+
 
 .pricing {
   display: inline-block;
@@ -81,32 +92,34 @@
         <!-- Item #1 -->
         <li class="column-left" align="center" id="slide">
           <div class="pricing">
-                <h4 class="header-h4" >Free - 30 Day Trial</h4>
+                <h4 class="header-h4" >30 DAY TRIAL<span class='mobileonly'>- FREE</span></h4>
                 <h2 class="large-h2">Free</h2>
-                 <div class="below-amount">Subscribe With Trial Profit </div>
-                <div class="item-text">Standard Monthly Plan</div>
+                 <!--<div class="below-amount">Weekly Winning Strategies</div>-->
+                <div class="item-text">Weekly Winning Strategies</div>
                 <div class="line-break"></div>
-                <div class="item-text">Cancel at Any Time</div>
-                <div class="line-break"></div>
-                <div class="item-text">Notification Alerts</div>
+                <div class="item-text">Highest Chance of Success</div>
+                <!--<div class="line-break"></div>
+                <div class="item-text">Real Time Alerts</div>-->
                 <div class="line-break" ></div>
-                <div class="item-text">Highest Statistical Chance of Success</div>
+                <div class="item-text">Cancel at Any Time</div>
               <div class="line-break"></div>
               <a href="https://www.grouca.com/sign.php" class="bottom-button">Sign Up</a>
           </div>
         </li>
         <li class="column-center-left" align="center" id="slide">
           <div class="pricing">
-                <h4 class="header-h4" >Monthly</h4>
+                <h4 class="header-h4" >Monthly <span class='mobileonly'>- $99</span></h4>
                 <h2 class="large-h2" >$99</h2>
-                <div class="below-amount" >per month</div>
-                <div class="item-text">Standard Monthly Plan</div>
+               
+                <!--<div class="item-text">Weekly Winning Strategies</div>-->
+                <!--<div class="line-break"></div>-->
+                <div class="item-text">Modeled for 25% + Returns</div>
+                <!--<div class="line-break"></div>
+               <div class="item-text">Real Time Trades</div>-->
                 <div class="line-break"></div>
-                <div class="item-text">Money-Back Guarantee</div>
+              <div class="item-text">Live Support</div>
                 <div class="line-break"></div>
-                <div class="item-text">Notification Alerts</div>
-                <div class="line-break"></div>
-                <div class="item-text">Highest Statistical Chance of Success</div>
+              <div class="item-text">Money-Back Guarantee</div>
                 <div class="line-break"></div>
                 <a href="https://www.grouca.com/signupforgrouca.php?price=monthly" class="bottom-button">Sign Up</a>
           </div>

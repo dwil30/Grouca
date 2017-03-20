@@ -37,10 +37,15 @@
 				
 					<h3 style="font-size:30px;">Grouca</h3>
 					
-					<p>
-					As a leading provider of options strategies, Grouca makes it easy for you to instantly trade options, even on-the-go, with confidence. Developing the right options strategy takes time, a carefully honed financial skill set, and constant attention to timing. We have developed a trading system that zeroes in on trades with the highest statistical odds of success. This innovative technology leveraged with our expertise in the field, means that by the time you hear about a potential opportunity, we’ve already done 100 percent of the research and developed a winning strategy. We focus on getting you gains. You focus on what do with them.
+					<p class="desktop">
+					As a leading provider of options trading strategies, Grouca's system makes it easy for you to instantly trading options, even on-the-go, with confidence and consistent performance. Developing the right options strategy takes time, a carefully honed financial skill set, and constant attention to timing. We have developed a system that zeroes in on option trades with the highest statistical odds of success. This innovative technology leveraged with our expertise in the field, means that by the time you hear about a potential opportunity, we’ve already done 100 percent of the research and generate a winning option strategy. We focus on getting you gains. You focus on what do with them while you learn to trade.
 					</p>
-				
+                    
+                    <p class="mobile">As a leading provider of options trading strategies, Grouca's system makes it easy for you to instantly trading options, even on-the-go, with confidence.  <br><br>
+
+We have developed a system that zeroes in on option trades with the highest statistical odds of success and pre-packaged for one click submital to your broker. <br><br>
+
+This innovative technology leveraged with our expertise in the field, means that by the time you hear about a potential opportunity, we’ve already done 100 percent of the research and generate a winning option strategy.</p>
 					
 				</div>
 				<!-- /Right column -->

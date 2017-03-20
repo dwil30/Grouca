@@ -1,6 +1,7 @@
 <?php 
 //error_reporting(E_ALL);ini_set('display_errors', 1);
 session_start();
+
 if( ! ini_get('date.timezone') )
 {
     date_default_timezone_set('GMT');
@@ -96,7 +97,8 @@ if(isset($_POST['Open']))
     $ID = $_POST['group1']; 
     $_SESSION['ID'] = $ID;
     include("connect.php");  
-    $sql_search = $mysqli->query("SELECT * FROM (SELECT * FROM positions Where TradeID = '".$ID."' ORDER BY Timestamp DESC) AS foo GROUP BY TradeID");
+    $query_update = "SELECT * FROM positions WHERE TradeID = '".$ID."' ORDER BY Timestamp DESC;";
+    $sql_search = $mysqli->query($query_update);
     $update = $sql_search->fetch_assoc(); 
     $_SESSION['results'] = $update;
     echo '<div style="color:red;">Record Found. See Update Position section below to update.</div>';
@@ -122,12 +124,12 @@ if(isset($_POST['Change']))
     
     if ($status == 'Delete'){
          
-         $sql_delete = $mysqli->query("DELETE FROM positions Where TradeID = '".$_SESSION['ID']."'");
+        $sql_delete = $mysqli->query("DELETE FROM positions Where TradeID = '".$_SESSION['ID']."'");
         echo '<div style="color:red;">Trade Position Successfully Removed</div>';
         $_SESSION['Update'] = null;
     }
     else
-{
+    {
         $sell = $mysqli->real_escape_string($_POST['up_sell']);
         $buy = $mysqli->real_escape_string($_POST['up_buy']); 
         $price = $_SESSION['price'];
@@ -147,26 +149,29 @@ if(isset($_POST['Change']))
         $trade= $mysqli->real_escape_string($_POST['up_trade']);
         $setPrice = $mysqli->real_escape_string(clean($_POST['up_setprice'])); 
         $change = $mysqli->real_escape_string($_POST['up_change']);
-    if (($_SESSION['results']['Status'] == $status) and ($_SESSION['results']['Sell'] == $sell) and ($_SESSION['results']['Buy'] == $buy)) 
-    {
-        $sql_update = "UPDATE positions 
-SET Title = '" . $title . "', Status = '" . $status . "', Stock = '".$ticker."', Price = '".$price."', Sell = '".$sell."', PriceSell = '".$price1."', Sell2 = '".$sell2."', PriceSell2 = '".$price2. "', Buy = '". $buy."', PriceBuy = '".$price3."', Buy2 = '".$buy2."', PriceBuy2 = '".$price4."', Gain = '" .$gain."', Loss = '".$loss."', Margin = '".$margin. "', Notes = '".$notes."', Date = CURDATE(), Action = '".$action."', Trade = '".$trade."', SetPrice = '".$setPrice."', ChangeAmount = '".$change."' WHERE ID = ".$_SESSION['results']['ID']."";
-       // print_r($_SESSION['price']); echo '<br>';
-       // print_r($sql_update);
         
-       $new = $mysqli->query($sql_update);
+        $queries = "UPDATE positions Set isCurrent = 0 WHERE TradeID = '".$_SESSION['ID']."';";
+        
+        $sql = $mysqli->query($queries);
+        
+        if (($status == 'Open') or($status == 'Closed'))  {
+         $query = "INSERT INTO positions (TradeID,Status,Title,Trade, Stock,Notes,ChangeAmount,Date,isCurrent) VALUES ('".$_SESSION['ID']."', '$status','$title','$trade','$ticker','$notes','$change',CURDATE(),'1')";
+        
+         $sql = $mysqli->query($query);
+        }
+        else {
+        $query = "INSERT INTO positions (TradeID,Status,IBStatus,Title,Stock,Price,Type,Number,Code,Letter,LowerPrice,UpperPrice,HighPrice,LetterCode,FullCode,Option,Option2,StockSymbol,IV,Gain,Loss,Margin,Notes,Date,Action,Trade,SetPrice,ChangeAmount,OptionSymbol,isCurrent)
+        SELECT TradeID,'$status',IBStatus,'$title',Stock,Price,Type,Number,Code,Letter,LowerPrice,UpperPrice,HighPrice,LetterCode,FullCode,Option,Option2,StockSymbol,IV,Gain,Loss,Margin,Notes,Date,Action,'Trade',SetPrice,'$change',OptionSymbol,1 From positions Where TradeID = '".$_SESSION['ID']."' ORDER BY Timestamp DESC LIMIT 1;";
+            
+        include 'send-adjustment.php';
+        }
+        
+        
+        
         echo '<div style="color:red;">Trade Position Successfully Updated</div>';
-    $_SESSION['Update'] = null;
+        $_SESSION['Update'] = null;
+        
     }   
-    else {    
-    $sql_update = $mysqli->query("INSERT INTO positions (Title, TradeID, Status, Stock, Price, Sell, PriceSell, Sell2, PriceSell2, Buy, PriceBuy, Buy2, PriceBuy2, Gain, Loss, Margin, Notes, Date, Action, Trade, SetPrice) VALUES('" . $title . "','" . $_SESSION['ID'] . "','" . $status . "', '" . $ticker . "', '" . $price. "','" . $sell . "','" . $price1 . "','" . $sell2 . "','" . $price2. "','" . $buy. "', '" . $price3. "','" . $buy2. "','" . $price4. "','" . $gain. "','" . $loss. "','" . $margin . "','" . $notes. "',CURDATE(),'" . $action. "','" . $trade. "','" . $setPrice. "')") or die(mysqli_error());
-        if (($status == 'At Risk') or ($status == 'In Trouble')) {
-            include 'send-adjustment.php';
-            }
-        echo '<div style="color:red;">Trade Position Successfully Updated</div>';
-    $_SESSION['Update'] = null;
-    }
-}
 }
 
 if(isset($_POST['OpenPosition'])) 
@@ -226,7 +231,65 @@ th, td, tr {
 <!--<button><a href="prices.php">Update Prices</a></button>-->
    <div class="w-row">
          <div class="w-col w-col-6">
-   <h3>New Daily Trade</h3>
+              <h3>Update Position</h3>
+       <?php if (isset($_SESSION['Update'])){?>
+      <div class="w-row">
+         <div class="w-col w-col-12">
+    <form method="post" action="">
+    <table style="width:100%;table:1px solid black;tr:1px solid black;td:1px solid black;">
+        <tr><th>Status</th>
+        <td><select required name="up_status">
+            <option disabled value="New" <?php if (($update['Status'] == 'New') or ($_POST['up_status'] == "New")) {echo 'selected="selected"';} ?>>New</option>
+            <option value="Open" <?php if (($update['Status'] == 'Open') or ($_POST['up_status'] == "Open")){echo 'selected="selected"';} ?>>Open</option>
+            <option disabled value="Adjust" <?php if (($update['Status'] == 'Adjust') or ($_POST['up_status'] == "Adjust")){echo 'selected="selected"';} ?>>Adjust</option>
+            <option value="Closed" <?php if (($update['Status'] == 'Closed') or ($_POST['up_status'] == "Closed")){echo 'selected="selected"';} ?>>Closed</option>
+            <option value="Delete">Delete</option>
+            </select></td>    
+        <tr><th>Title</th>
+        <td><input style="width:100%"type="text" name="up_title" value="<?PHP if(empty($update['Title'])){echo  htmlspecialchars($_POST['up_title']);} else {echo $update['Title'];} ?>"></td></tr>
+        <tr><th>Stock</th>
+        <td><input required style="width:20%" type="text" name="up_ticker" value="<?PHP if(empty($update['Stock'])){echo  htmlspecialchars($_POST['up_ticker']);} else {echo $update['Stock'];} ?>">&nbsp;<b><?PHP if(isset($update['Price'])){echo $update['Price']; $update['Price'] = $_SESSION['price'];} ?>&nbsp;</b><input name="Lookup2" id="Lookup2" type="submit" class="w-button button-send" value="Get Price" style="color:black;"/></td></tr>
+          <tr><th>Trade</th>
+        <td><input style="width:100%" type="text" name="up_trade" value="<?PHP if(empty($update['Trade'])){echo  htmlspecialchars($_POST['up_trade']);} else {echo $update['Trade'];} ?>"></td></tr>
+        <tr><th>Action</th>
+        <td><input style="width:100%" type="text" name="up_action" value="<?PHP if(empty($update['Action'])){echo  htmlspecialchars($_POST['up_action']);} else {echo $update['Action'];} ?>"></td></tr>
+         <tr><th>Price</th>
+        <td><input style="width:100%" type="text" name="up_setprice" value="<?PHP if(empty($update['SetPrice'])){echo  htmlspecialchars($_POST['up_setprice']);} else {echo $update['SetPrice'];} ?>"></td></tr>
+        <!--<tr><th>Sell</th>
+        <td> <input  style="width:50%" type="text" name="up_sell" value="<?PHP if(empty($update['Sell'])){echo  htmlspecialchars($_POST['up_sell']);} else {echo $update['Sell'];} ?>"> for <input  style="width:25%" type="text" name="up_price1" value="<?PHP if(empty($update['PriceSell'])){echo  htmlspecialchars($_POST['up_price1']);} else {echo $update['PriceSell'];} ?>"></td></tr>
+          <tr><th>Sell 2</th>
+        <td> <input style="width:50%" type="text" name="up_sell2" value="<?PHP if(empty($update['PriceSell2'])){echo  htmlspecialchars($_POST['up_sell2']);} else {echo $update['Sell2'];} ?>"> for <input style="width:25%" type="text" name="up_price2" value="<?PHP if(empty($update['PriceSell2'])){echo  htmlspecialchars($_POST['up_price2']);} else {echo $update['PriceSell2'];} ?>"></td></tr>
+               <tr><th>Buy</th>
+        <td> <input style="width:50%" type="text" name="up_buy" value="<?PHP if(empty($update['PriceBuy'])){echo  htmlspecialchars($_POST['up_buy']);} else {echo $update['Buy'];} ?>"> for <input style="width:25%" type="text" name="up_price3" value="<?PHP if(empty($update['PriceBuy'])){echo  htmlspecialchars($_POST['up_price3']);} else {echo $update['PriceBuy'];} ?>"></td></tr>
+          <tr><th>Buy 2</th>
+        <td> <input  style="width:50%" type="text" name="up_buy2" value="<?PHP if(empty($update['PriceBuy2'])){echo  htmlspecialchars($_POST['up_buy2']);} else {echo $update['Buy2'];} ?>">&nbsp;for <input  style="width:25%" type="text" name="up_price4"value="<?PHP if(empty($update['PriceBuy2'])){echo  htmlspecialchars($_POST['up_price4']);} else {echo $update['PriceBuy2'];} ?>"></td></tr>-->
+        <tr><th>Target Gain</th>
+            <td><input   style="width:100%" type="text" name="up_gain" value="<?PHP if(empty($update['Gain'])){echo  htmlspecialchars($_POST['up_gain']);} else {echo $update['Gain'];} ?>"></td></tr>
+             <tr><th>Max Loss</th>
+            <td><input   style="width:100%" type="text" name="up_loss" value="<?PHP if(empty($update['Loss'])){echo  htmlspecialchars($_POST['up_loss']);} else {echo $update['Loss'];} ?>"></td></tr>
+         <tr><th>Margin</th>
+            <td><input    style="width:100%" type="text" name="up_margin" value="<?PHP if(empty($update['Margin'])){echo  htmlspecialchars($_POST['up_margin']);} else {echo $update['Margin'];} ?>"></td></tr>
+        <tr><th>Notes</th>
+            <td> <textarea id="message" name="up_notes" class="w-input msg-text"><?PHP if(empty($update['Notes'])){echo  htmlspecialchars($_POST['up_notes']);} else {echo $update['Notes'];} ?></textarea></td></tr>
+         <tr><th>Annualized %</th>
+            <td> <input style="width:100%" type="text" name="up_change" value="<?PHP if(empty($update['ChangeAmount'])){echo  htmlspecialchars($_POST['up_change']);} else {echo $update['ChangeAmount'];} ?>"></td></tr>
+        </table>
+             <br><input name="Change" type="submit" class="w-button button-send" value="Update" style="color:black;"/>
+     <input name="Reset" type="submit" class="w-button button-send" value="Cancel" style="color:black;"/>
+        </form>
+            
+    <br><br></div></div>
+ <?php
+}
+else
+{
+?>
+                  <p>Select a position to update</p>        
+                <?php
+}
+?>
+             
+   <!--<h3>New Daily Trade</h3>
     <form method="post" action="">
     <table style="width:100%;table:1px solid black;tr:1px solid black;td:1px solid black;">
         <tr><th>Title</th>
@@ -259,7 +322,7 @@ th, td, tr {
         <br>
       <input name="Post" id="send" type="submit" class="w-button button-send" value="Post" style="color:black;"/>
              <input name="Reset" id="send" type="reset" class="w-button button-send" value="Reset" style="color:black;"/>
-		</form>
+		</form>-->
     </div>
     
     <div class="w-col w-col-6">       
@@ -273,12 +336,13 @@ th, td, tr {
             <th>Action</th>
             <th>Status</th>
             <th>Trade</th>
-            <th>Change</th>
+            <th>Annualized %</th>
             <th>Price</th>
         </tr>
       <?php 
             include("connect.php");  
-            $sql_new = $mysqli->query("SELECT * FROM (SELECT * FROM positions ORDER BY Timestamp DESC) AS foo GROUP BY TradeID ORDER BY Timestamp DESC");
+        $query_new = "SELECT *, max(Action) as Action, max(Trade) as Trade, max(Notes) as Notes, max(Gain) as Gain, max(Loss) as Loss FROM positions Where isCurrent = 1 Group By TradeID";
+            $sql_new = $mysqli->query($query_new);
             while ($row = $sql_new->fetch_assoc()) {
                 if ($row['Status'] != 'Closed'){
                 echo '<tr>
@@ -286,7 +350,7 @@ th, td, tr {
         <td>'.convertD($row['Date']).'</td>
         <td>'.$row['Stock'].'</td> 
         <td>'.$row['Action'].'</td> 
-        <td><a href="history.php?ID='; echo $row['TradeID']; echo'">'.$row['Status'].'</a></td>
+        <td><a href="../history.php?ID='; echo $row['TradeID']; echo'">'.$row['Status'].'</a></td>
         <td>'.$row['Trade'].'</td> 
         <td>';      
         if ($row['SetPrice'] > 0){echo round(($row['PriceBuy']*(-1) + $row['PriceBuy2']*(-1) + $row['PriceSell'] + $row['PriceSell2'] + $row['SetPrice'])/abs($row['PriceBuy']*(-1) + $row['PriceBuy2']*(-1) + $row['PriceSell'] + $row['PriceSell2']), 2, PHP_ROUND_HALF_UP)*100 .'%</td>';}
@@ -310,11 +374,22 @@ th, td, tr {
             <th>Action</th>
             <th>Status</th>
             <th>Trade</th>
-            <th>Change</th>
+            <th>Annualized %</th>
         </tr>
      <?php 
             include("connect.php");  
-            $sql_close = $mysqli->query("SELECT * FROM (SELECT * FROM positions ORDER BY TIMESTAMP DESC) AS foo GROUP BY TradeID ORDER BY Timestamp DESC");
+          $query_close = "
+            SELECT s. *
+FROM positions s
+JOIN (
+
+SELECT * , MAX( TIMESTAMP ) AS maxdate
+FROM positions s
+GROUP BY TradeID
+)ss ON s.TradeID = ss.TradeID
+AND s.Timestamp = ss.maxdate
+ORDER BY TIMESTAMP DESC;";
+            $sql_close = $mysqli->query($query_close);
             while ($row = $sql_close->fetch_assoc()) {
                 if ($row['Status']=="Closed"){
                 echo '<tr>
@@ -336,74 +411,14 @@ th, td, tr {
     
         
     </div>
-    
-    
     </div>
-    <hr>
-          <h3>Update Position</h3>
-       <?php if (isset($_SESSION['Update'])){?>
-      <div class="w-row">
-         <div class="w-col w-col-6">
-    <form method="post" action="">
-    <table style="width:100%;table:1px solid black;tr:1px solid black;td:1px solid black;">
-        <tr><th>Status</th>
-        <td><select required name="up_status">
-            <option value="New" <?php if (($update['Status'] == 'New') or ($_POST['up_status'] == "New")) {echo 'selected="selected"';} ?>>New</option>
-            <option value="Open" <?php if (($update['Status'] == 'Open') or ($_POST['up_status'] == "Open")){echo 'selected="selected"';} ?>>Open</option>
-            <option value="At Risk" <?php if (($update['Status'] == 'At Risk') or ($_POST['up_status'] == "At Risk")){echo 'selected="selected"';} ?>>At Risk Adjustment</option>
-            <option value="In Trouble" <?php if (($update['Status'] == 'In Trouble') or ($_POST['up_status'] == "In Trouble")){echo 'selected="selected"';} ?>>In Trouble Adjustment</option>
-            <option value="Closed" <?php if (($update['Status'] == 'Closed') or ($_POST['up_status'] == "Closed")){echo 'selected="selected"';} ?>>Closed</option>
-            <option value="Delete">Delete</option>
-            </select></td>    
-        <tr><th>Title</th>
-        <td><input style="width:100%"type="text" name="up_title" value="<?PHP if(empty($update['Title'])){echo  htmlspecialchars($_POST['up_title']);} else {echo $update['Title'];} ?>"></td></tr>
-        <tr><th>Stock</th>
-        <td><input required style="width:20%" type="text" name="up_ticker" value="<?PHP if(empty($update['Stock'])){echo  htmlspecialchars($_POST['up_ticker']);} else {echo $update['Stock'];} ?>">&nbsp;<b><?PHP if(isset($update['Price'])){echo $update['Price']; $update['Price'] = $_SESSION['price'];} ?>&nbsp;</b><input name="Lookup2" id="Lookup2" type="submit" class="w-button button-send" value="Get Price" style="color:black;"/></td></tr>
-          <tr><th>Trade</th>
-        <td><input style="width:100%" type="text" name="up_trade" value="<?PHP if(empty($update['Trade'])){echo  htmlspecialchars($_POST['up_trade']);} else {echo $update['Trade'];} ?>"></td></tr>
-        <tr><th>Action</th>
-        <td><input style="width:100%" type="text" name="up_action" value="<?PHP if(empty($update['Action'])){echo  htmlspecialchars($_POST['up_action']);} else {echo $update['Action'];} ?>"></td></tr>
-         <tr><th>Price</th>
-        <td><input style="width:100%" type="text" name="up_setprice" value="<?PHP if(empty($update['SetPrice'])){echo  htmlspecialchars($_POST['up_setprice']);} else {echo $update['SetPrice'];} ?>"></td></tr>
-        <tr><th>Sell</th>
-        <td> <input  style="width:50%" type="text" name="up_sell" value="<?PHP if(empty($update['Sell'])){echo  htmlspecialchars($_POST['up_sell']);} else {echo $update['Sell'];} ?>"> for <input  style="width:25%" type="text" name="up_price1" value="<?PHP if(empty($update['PriceSell'])){echo  htmlspecialchars($_POST['up_price1']);} else {echo $update['PriceSell'];} ?>"></td></tr>
-          <tr><th>Sell 2</th>
-        <td> <input style="width:50%" type="text" name="up_sell2" value="<?PHP if(empty($update['PriceSell2'])){echo  htmlspecialchars($_POST['up_sell2']);} else {echo $update['Sell2'];} ?>"> for <input style="width:25%" type="text" name="up_price2" value="<?PHP if(empty($update['PriceSell2'])){echo  htmlspecialchars($_POST['up_price2']);} else {echo $update['PriceSell2'];} ?>"></td></tr>
-               <tr><th>Buy</th>
-        <td> <input style="width:50%" type="text" name="up_buy" value="<?PHP if(empty($update['PriceBuy'])){echo  htmlspecialchars($_POST['up_buy']);} else {echo $update['Buy'];} ?>"> for <input style="width:25%" type="text" name="up_price3" value="<?PHP if(empty($update['PriceBuy'])){echo  htmlspecialchars($_POST['up_price3']);} else {echo $update['PriceBuy'];} ?>"></td></tr>
-          <tr><th>Buy 2</th>
-        <td> <input  style="width:50%" type="text" name="up_buy2" value="<?PHP if(empty($update['PriceBuy2'])){echo  htmlspecialchars($_POST['up_buy2']);} else {echo $update['Buy2'];} ?>">&nbsp;for <input  style="width:25%" type="text" name="up_price4"value="<?PHP if(empty($update['PriceBuy2'])){echo  htmlspecialchars($_POST['up_price4']);} else {echo $update['PriceBuy2'];} ?>"></td></tr>
-        <tr><th>Target Gain</th>
-            <td><input   style="width:100%" type="text" name="up_gain" value="<?PHP if(empty($update['Gain'])){echo  htmlspecialchars($_POST['up_gain']);} else {echo $update['Gain'];} ?>"></td></tr>
-             <tr><th>Max Loss</th>
-            <td><input   style="width:100%" type="text" name="up_loss" value="<?PHP if(empty($update['Loss'])){echo  htmlspecialchars($_POST['up_loss']);} else {echo $update['Loss'];} ?>"></td></tr>
-         <tr><th>Margin</th>
-            <td><input    style="width:100%" type="text" name="up_margin" value="<?PHP if(empty($update['Margin'])){echo  htmlspecialchars($_POST['up_margin']);} else {echo $update['Margin'];} ?>"></td></tr>
-        <tr><th>Notes</th>
-            <td> <textarea id="message" name="up_notes" class="w-input msg-text"><?PHP if(empty($update['Notes'])){echo  htmlspecialchars($_POST['up_notes']);} else {echo $update['Notes'];} ?></textarea></td></tr>
-         <tr><th>Change</th>
-            <td> <input style="width:100%" type="text" name="up_change" value="<?PHP if(empty($update['ChangeAmount'])){echo  htmlspecialchars($_POST['up_change']);} else {echo $update['ChangeAmount'];} ?>"></td></tr>
-        </table>
-             <br><input name="Change" type="submit" class="w-button button-send" value="Update" style="color:black;"/>
-     <input name="Reset" type="submit" class="w-button button-send" value="Cancel" style="color:black;"/>
-        </form>
-            
-    <br><br></div></div>
- <?php
-}
-else
-{
-?>
-                  <p>Select a position above to update</p>        
-                <?php
-}
-?>
+  
  <div>
     <div class="section footer">
       <div class="w-container">
         <div class="w-row">
           <div class="w-col w-col-6 copyright">
-            <p class="copyright-text">© 2014 Grouca&nbsp;</p>
+            <p class="copyright-text">© 2017 Grouca&nbsp;</p>
           </div>
           <div class="w-col w-col-6">
             <div class="team-icons footer">

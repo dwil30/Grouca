@@ -1,10 +1,20 @@
+<?php
+session_start(); 
+
+if ($_SESSION['LoggedIn'] != 1){
+    $_SESSION['GoTo'] = 'member';
+    header("location:log.php");
+}
+
+require_once('include/header.php');
+
+?>
+
     <style>
          @media only screen and (min-width:864px){
         #menu-selected {width: 120px !important;left: 596px !important;}
         }
     </style>      
-
-        <?php require_once('include/header.php'); ?>
 
 		<body>
 

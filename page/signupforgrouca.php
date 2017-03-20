@@ -28,10 +28,8 @@ include("simple-php-captcha.php"); $_SESSION['captcha'] = simple_php_captcha(); 
                                     <?php if ((isset($_GET['discount'])) and ($_GET['discount'] == 'grouca1')){ ?>
 									<li>
 										<div class="block field-box">
-											<input required id="radio-button" type="radio" name="price" value="1" style="width: auto;
-    margin-right: 5px;"><b>$79 per month recurring</b> (normally $99/month) 20% Discount.<br>
-                                             <input required id="radio-button2" type="radio" name="price" value="2" style="width: auto;
-    margin-right: 5px;"><b> $869 per year</b> - 27% Discount.
+											<input required id="radio-button" type="radio" name="price" value="1" style="width: auto;margin-right: 5px;"><b>$79 per month recurring</b> (normally $99/month) 20% Discount.<br>
+                                             <input required id="radio-button2" type="radio" name="price" value="2" style="width: auto;margin-right: 5px;"><b> $869 per year</b> - 27% Discount.
 										</div>
 									</li>
                                     <?php } else { ?>
@@ -48,9 +46,9 @@ include("simple-php-captcha.php"); $_SESSION['captcha'] = simple_php_captcha(); 
                                     <?php if (empty($_SESSION['LoggedIn'])) : ?>
                                     <p class="subheader" style="margin-left: 0px;">Create New Profile or 
                                     <?php if ((isset($_GET['discount'])) and ($_GET['discount'] == 'grouca1')){ ?>
-                                    	<a href='log.php?discount=grouca1'>Log In</a></h1>
+                                    	<a id="loglink" href='log.php'>Log In</a>
                                     <?php } else { ?>
-                                    	<a href='log.php?discount=normal'>Log In</a></h1>
+                                    	<a id="loglink" href='log.php'>Log In</a>
                                     <?php } ?>
 									<li>
 										<div class="block field-box">
@@ -81,12 +79,17 @@ include("simple-php-captcha.php"); $_SESSION['captcha'] = simple_php_captcha(); 
 											<input type="text" id="security_code" name="security_code" autocomplete="off" class="w-input email-text" required>
 										</div>
 									</li>
+                                        <style>
+                                            #continue {font-size:14px;}
+                                            @media (max-width: 579px) {
+                                            #continue {
+                                            font-size: 10px!important;width: 100%;padding: 8px;padding-left: 4px; padding-right:4px;}}</style>
 									<li>
-                                            <input type="submit" id="continue" name="continue_off" class="button" value="Create Profile and Continue to Checkout Page" style="font-size: 14px;">
+                                            <input type="submit" id="continue" name="continue_off" class="button" value="Create Profile and Continue to Checkout">
 									</li>
 							 <?php else : ?>
 									<li>
-                                            <input type="submit" id="continue" name="continue_log" class="button" value="Continue to Checkout Page" style="font-size: 14px;"/>
+                                            <input type="submit" id="continue" name="continue_log" class="button" value="Continue to Checkout"/>
 									</li>
                                 <?php endif; ?>    
 								
@@ -99,17 +102,17 @@ include("simple-php-captcha.php"); $_SESSION['captcha'] = simple_php_captcha(); 
 					 <p class="subheader" style="padding:0px;margin-top:20px;">Your subscription includes:</p>
                         <ul>
                             <li style="margin-top:10px;"><b>Grouca’s High Probability Trade Locator</b><br><br>We’ve developed innovative, data-driven technology that scours the market, then zeroes in on trades that provide the highest statistical chances of success based on price momentum, fundamentals and option strategy.</li>
-                            <li style="margin-top:10px;"><b>Full Access: Current & Future High Probability Trades</b><p>Once we identify a new high probability trade, you receive a New Trade alert, complete with a detailed options strategy. When open trades require re-balancing or adjustments, you’ll receive a Risk alert that outlines how to get back on track.</p>
-<p>Each At Risk or In Trouble alert tells you:</p>
-                                <ul style="list-style-type: circle;padding-left: 20px;">
+                            <li style="margin-top:10px;"><b>Full Access: Current & Future High Probability Trades</b><p>Once we identify a new high probability trade, you receive a New Trade alert, complete with a detailed options strategy. When open trades require re-balancing or adjustments, you’ll receive an Adjustment alert that outlines how to get back on track.</p>
+<p>Each Adjustment alert tells you:</p>
+                                <ul style="list-style-type: disc;padding-left: 20px;">
                                 <li>When to book a profit</li>
                                 <li>How to leverage current gains higher</li>
                                 <li>How to adjust trades to minimize risk</li>
                                 <li>How to reverse losing positions to break even or get back to gain status.</li>
                         </ul></li>
                             
-                            <li style="margin-top:10px;"><b>Full Access: Adjustment Manager</b><p>Once we identify a new high probability trade, you receive a New Trade alert, complete with a detailed options strategy. When open trades require rebalancing or adjustments, you’ll receive an At Risk or In Trouble alert that outlines how to get back on track.</p><p>Each new trade contains:</p>
-                                <ul style="list-style-type: circle;padding-left: 20px;">
+                            <li style="margin-top:10px;"><b>Full Access: Adjustment Manager</b><p>Once we identify a new high probability trade, you receive a New Trade alert, complete with a detailed options strategy. When open trades require rebalancing or adjustments, you’ll receive an Adjust alert that outlines how to get back on track.</p><p>Each new trade contains:</p>
+                                <ul style="list-style-type: disc;padding-left: 20px;">
                                     <li>Option strategy</li>
                                     <li>Underlying stock name and price</li>
                                     <li>Detailed instructions on how to place the order</li>
@@ -125,7 +128,7 @@ include("simple-php-captcha.php"); $_SESSION['captcha'] = simple_php_captcha(); 
 					<!-- Right column -->
 					<div class="column-right">
 						
-						<p class="subheader" style="padding:0px;">Expertly Selected Trades, Executed in Seconds.</p>
+						<p class="subheader" style="padding:0px;">Expertly selected trades, executed in seconds.</p>
                         <p style="padding-bottom:10px;">Trade options like the experts, without the time commitment. Grouca lets you navigate the complex world of options trading with ease, even on the go.</p>
                         
                         <p class="subheader" style="padding:0px;">No long-term commitment required.</p>
@@ -141,7 +144,7 @@ include("simple-php-captcha.php"); $_SESSION['captcha'] = simple_php_captcha(); 
                         <p style="padding-bottom:10px;">All credit card charges will appear under the name Labtrade, LLC. Maurice Lichten, Grouca’s Managing Director, may have a financial interest in some or all of Grouca's recommendations as he trades on the same equities and options that are recommended. </p>
                         
                         <p class="subheader" style="padding:0px;">RISK DISCLOSURE: </p>
-                        <p style="padding-bottom:10px;">Past performance is not necessarily indicative of future results. All of the content on our website and in our email alerts is for informational purposes only, and should not be construed as an offer, or solicitation of an offer, to buy or sell securities. Grouca is not registered or regulated as a broker-dealer. Remember, you should always consult with a licensed securities professional before purchasing or selling securities of companies profiled or discussed on Grouca.com or in our service alerts. </p>
+                        <p style="padding-bottom:10px;">Past performance is not necessarily indicative of future results. Grouca is not registered or regulated as a broker-dealer. Grouca  is a educational site designed to empower option traders. While our trading strategies have performed well for our students in the past, it is not necessarily indicative of future results. All of the content on our website and in our email alerts is for educational and informational purposes only, and should not be construed as an offer, or solicitation of an offer, to buy or sell securities. Remember, you should always consult with a licensed securities professional before purchasing or selling securities of companies profiled or discussed on Grouca.com or in our service alerts.</p>
 					</div>
 					<!-- /Right column -->
 
@@ -151,4 +154,16 @@ include("simple-php-captcha.php"); $_SESSION['captcha'] = simple_php_captcha(); 
 			</div>
 			
 		</div>
+        <script>
+        $( document ).ready(function() {
+            var price = $('input[name=price]:checked').val();
+            $("#loglink").attr('href', 'log.php?price='+price);
+        
+            $('input[type=radio][name=price]').change(function() {
+                var price = $('input[name=price]:checked').val();
+            $("#loglink").attr('href', 'log.php?price='+price);
+            });
+            });
+            
+            </script>    
 </body>

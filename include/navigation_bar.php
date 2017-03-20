@@ -1,4 +1,5 @@
-		<div id="navigation-bar" class="clear-fix">
+<style>li.page-contact > div {background-color:#2C343D;}</style>
+<div id="navigation-bar" class="clear-fix">
 			
 			<div class="main clear-fix">
 
@@ -18,11 +19,11 @@
 				<div id="menu">
 					<div id="menu-selected"></div>
 					<ul class="sf-menu">
-						<li><a href="index.php#about">About<span></span></a></li>
-						<li><a href="index.php#services">Services<span></span></a></li>
-						<li><a href="index.php#team">Team<span></span></a></li>
-						<li><a href="index.php#pricing-plans">Pricing<span></span></a></li>
-						<li><a href="index.php#contact">Contact<span></span></a></li>
+						<li><a href="index.php#page-about">About<span></span></a></li>
+						<li><a href="index.php#page-services">Services<span></span></a></li>
+						<li><a href="index.php#page-team">Team<span></span></a></li>
+						<li><a href="index.php#page-pricing-plans">Pricing<span></span></a></li>
+						<li><a href="index.php#page-contact">Contact<span></span></a></li>
 						<li><a href="perf.php">Performance<span></span></a></li>            
             <?php if (empty($_SESSION['LoggedIn'])){ ?>
 						<li><a href="log.php">Login<span></span></a></li>
@@ -56,11 +57,11 @@
                 <!-- Responsive menu from nav bar -->
 				<div id="menu-responsive" class="clear-fix">
 					<select>
-						<option value="index.php#about">About</option>
-						<option value="index.php#services">Services</option>
-						<option value="index.php#team">Team</option>
-						<option value="index.php#pricing-plans">Pricing</option>
-						<option value="index.php#contact" >Contact</option>
+						<option value="index.php#page-about">About</option>
+						<option value="index.php#page-services">Services</option>
+						<option value="index.php#page-team">Team</option>
+						<option value="index.php#page-pricing-plans">Pricing</option>
+						<option value="index.php#page-contact" >Contact</option>
             <option value="perf.php" <?php if (strpos($actual_link,'perf') !== false) {echo 'Selected';}?> >Performance</option>
 						
             <?php if (empty($_SESSION['LoggedIn'])){ ?>

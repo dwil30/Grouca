@@ -1,4 +1,4 @@
-<?php require_once('config.php'); ?>
+<?php require_once('config.php');?>    
 
 <?php include("simple-php-captcha.php"); $_SESSION['captcha'] = simple_php_captcha(); ?>
 
@@ -26,7 +26,7 @@
 						
 					       
 						<!-- Contact form -->
-            <form id="myForm" method="POST" action="processForm.php">
+            <form id="myForm" method="POST" action="#">
                 <div class="clear-fix">
 				<ul class="list-0 clear-fix">
                     <!-- Name -->
@@ -90,8 +90,8 @@
 
 						<!-- Social icon list -->
 						<ul class="social-list social-list-style-2 clear-fix margin-top-50">
-							<li><a href="http://facebook.com/Grouca" class="social-list-facebook"></a></li>
-							<li><a href="http://twitter.com/Grouca" class="social-list-twitter"></a></li>
+							<li><a href="#" class="social-list-facebook"></a></li>
+							<!--<li><a href="http://twitter.com/Grouca" class="social-list-twitter"></a></li>-->
 						</ul>
 						<!-- /Social icon list -->
 						
@@ -105,6 +105,7 @@
 			
 		</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
 <script>
 $("#myForm").submit(function() {
     $.post('processForm.php', {code: $('#code').val(), email: $('#email').val(), message: $('#message').val(), myFormSubmitted: 'yes'}, function(data) {

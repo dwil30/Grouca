@@ -86,6 +86,8 @@ time,mark,audio,video
 /******************************************************************************/
 /*	1. Base styles					                                             		       */
 /******************************************************************************/
+  .mobile {display:none;}
+    .desktop {display:block;}
 
 body
 {
@@ -854,6 +856,8 @@ ul.page-list
 	}
 
 @media screen and (max-width: 600px) {
+    .mobile {display:block;}
+    .desktop {display:none;}
     ul.page-list>li
 	{
 		padding:0px;
@@ -885,7 +889,7 @@ ul.page-list
 	
 	ul.page-list>li.page-services
 	{
-		padding-top:80px;
+		/*padding-top:80px; */
 	}
 	
 	/**************************************************************************/
@@ -967,6 +971,11 @@ div.section-background-3
 {
 	margin-top:40px;
 	background-image:url('../_sample/section_background/image_03.jpg');
+}
+div.section-background-4
+{
+	margin-top:40px;
+	background-image:url('../_sample/home_carousel/image_02.jpg');
 }
 
 div.section-background-color
@@ -1291,21 +1300,47 @@ div.home-carousel-box
 						border-width:6px;
 						border-style:solid;						
 					}
+div.home-carousel-title-box>.main>div>span
+					{
+						padding:50px;
+						border-width:6px;
+						border-style:solid;						
+					}
 
 						div.home-carousel-title-box>.main>a>span>span,
 						div.home-carousel-title-box>.main>a>span>span+span
 						{
 							line-height:1;
 						}
+div.home-carousel-title-box>.main>div>span>span,
+						div.home-carousel-title-box>.main>div>span>span+span
+						{
+							line-height:1;
+						}
 
 						div.home-carousel-title-box>.main>a>span>span
 						{
-							font-size:72px;
+							font-size:68px;
+							font-weight:700;
+							text-transform:uppercase;
+						}
+div.home-carousel-title-box>.main>div>span>span
+						{
+							font-size:68px;
 							font-weight:700;
 							text-transform:uppercase;
 						}
 
 						div.home-carousel-title-box>.main>a>span>span+span
+						{
+							font-size:20px;
+							margin-top:20px;
+							line-height:130%;
+							font-style:italic;
+							font-weight:normal;
+							text-transform:none;
+						}
+	div.home-carousel-title-box>.main>div>span>span+span
 						{
 							font-size:20px;
 							margin-top:20px;
@@ -1846,6 +1881,17 @@ textarea
 		font-size:16px;
 		text-transform:uppercase;
 	}
+
+  div.section-background.section-background-4 {
+      
+      margin-top:0px;
+      margin-top: 0px;
+      background-position: 50% 0%;
+      position: relative;
+      height:600px;
+      background-size:cover;
+      background-image:url('../_sample/home_carousel/image_02.jpg');
+    }
 
 /******************************************************************************/
 /*	22. Preloader					                                              		       */
@@ -3232,18 +3278,27 @@ content: attr(data-th); font-weight: bold;
 display: inline-block; width: 6rem;
     }
 #history tr {border:0px solid #ccc;}
+    
+    .subheader.padding-bottom-30 {
+        font-size:21px;
+    }
 }
 
 @media screen and (max-width: 600px) {
     #adjustment {
         font-size:11px;
     }
+   
 }
 
 @media screen and (max-width: 600px) {
     .page-about, .page-services, .page-team, .page-pricing-plans {
         padding-top:16px!important;
     }
+     ul.page-list>li.page-team
+	{
+		padding-bottom:0px;
+	}
     h2.underline {
         padding-bottom:10px!important;
         margin-bottom: 15px;
@@ -3283,3 +3338,50 @@ display: inline-block; width: 6rem;
 .alm-ib-message-error {
     color: red;
 }
+@media screen and (max-width: 600px) {
+    div.home-carousel-title-box
+            {
+                top:50%;
+    }
+      .mobile {display:block;}
+    .desktop {display:none;}
+    
+    div.home-carousel-title-box>.main>div>span {
+        
+    border-width:3px!important;
+    }
+}
+
+@media (max-width: 991px) {
+}
+
+@media (max-width: 767px) {
+    div.home-carousel-title-box>.main>div>span {
+        padding:25px;
+    }
+    div.home-carousel-title-box>.main>div>span>span {
+        font-size:50px;
+    }
+}
+
+@media (max-width: 479px) {
+    div.home-carousel-title-box>.main>div>span>span{
+        font-size:30px;
+    }
+     div.home-carousel-title-box>.main>div>span {
+        padding:10px;
+    }
+    #videoForm {
+        width:auto!important;
+    }
+    div.section-background.section-background-4 {
+        height:300px;
+    }
+    form input[type="submit"], form input[type="button"]{
+        border-radius: 0px!important;
+    }
+     ul.feature-list.feature-list-icon-medium.feature-list-icon-left li p
+    {margin-left:0px;}
+}
+
+
