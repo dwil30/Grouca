@@ -60,7 +60,7 @@ if(isset($_POST['continue_off'])) {
                         header("location:payment.php");
                         
                     } else {
-                        $errors .= "Sorry, your registration failed. Please go back and try again.";
+                        $errors .= "Sorry, your registration failed. Please go back and try again.test";
 						$errors .= '<br/>'.mysql_error($query_new_user_insert);
                     }
                 }
