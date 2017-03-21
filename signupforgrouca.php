@@ -61,6 +61,7 @@ if(isset($_POST['continue_off'])) {
                         
                     } else {
                         $errors .= "Sorry, your registration failed. Please go back and try again.";
+						$errors .= '<br/>'.mysql_error($query_new_user_insert);
                     }
                 }
             } else {
