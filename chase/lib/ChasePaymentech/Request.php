@@ -216,8 +216,7 @@ abstract class ChasePaymentech_Request {
             )
         );
 
-        //$mode = ($this->_test_mode == true) ? 'test' : 'prod';
-        $mode =  'test'; 
+        $mode = ($this->_test_mode == true) ? 'test' : 'prod';
 
         return $urls[$mode][$this->_retry_count];
     }
