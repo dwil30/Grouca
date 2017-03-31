@@ -77,11 +77,11 @@ width:100%;
       $url .= "hostedSecureID=cpt280695546837&";
       $url .= "hostedSecureAPIToken=314463a4134943a1df89146ca9d34571&";
       //$url .= "hostedSecureID=cpt412581415334SB&";  
-      $url .= "callback_url=https://grouca.com/Callback.html&";
-      $url .= "cancel_url=https://grouca.com/signup.php&";
-      $url .= "css_url=https://grouca.com/css/form.css&";
-      $url .= "return_url=https://grouca.com/success.php&";
-      $url .= "content_template_url=https://grouca.com/payment.php&";
+      $url .= "callback_url=https://www.grouca.com/Callback.html&";
+      $url .= "cancel_url=https://www.grouca.com/signup.php&";
+      $url .= "css_url=https://www.grouca.com/css/form.css&";
+      $url .= "return_url=https://www.grouca.com/success.php&";
+      $url .= "content_template_url=https://www.grouca.com/payment.php&";
       $url .= "action=buildForm&";
 if(isset($_SESSION['UserName'])){$url .= "customer_email=".$_SESSION['UserName']."&";}
    //$uniqid = $prefix . uniqid();
