@@ -48,7 +48,7 @@ if(isset($_POST['continue_off'])) {
                     // write new user's data into database
                     $sql = "INSERT INTO users (user_password_hash, user_email, JoinDate, AccountType, Subscribed)
                             VALUES('" . $user_password_hash . "', '" . $user_email . "', CURDATE(), 'Trial', '1');";
-                    $query_new_user_insert = mysql_query($sql);
+                    $query_new_user_insert = $mysqli->query($sql)or die(mysql_error());
 
                     // if user has been added successfully
                     if ($query_new_user_insert) {
@@ -60,9 +60,8 @@ if(isset($_POST['continue_off'])) {
                         header("location:payment.php");
                         
                     } else {
-                        $errors .= "Sorry, your registration failed. Please go back and try again.test";
-						$errors .= '<br/>'.mysql_error($query_new_user_insert);
-                    }
+                        $errors .= "Sorry, your registration failed. Please go back and try again.";
+				    }
                 }
             } else {
                 $errors .= "Sorry, no database connection.";
