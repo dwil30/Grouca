@@ -106,8 +106,8 @@ elseif ($_SESSION['price'] == "2"){$url .= "amount=869.00";}
 elseif ($_SESSION['price'] == "3"){$url .= "amount=99.00";} 
 elseif ($_SESSION['price'] == "4"){$url .= "amount=1189.00";} 
 elseif ($_SESSION['price'] == "5"){$url .= "amount=1089.00";}                                         
-//else {$url .= "amount=99.00";} 
-else {$url .= "amount=1.00";} 
+else {$url .= "amount=99.00";} 
+
 
       //$url .= $amount; 
 //print_r($url);
