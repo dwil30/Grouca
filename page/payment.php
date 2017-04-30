@@ -1,6 +1,9 @@
 <?php 
 include("simple-php-captcha.php"); $_SESSION['captcha'] = simple_php_captcha(); ?>
 <?php require_once('include/navigation_bar.php'); ?>
+<style>
+    body{color:#c3c3c3;}
+</style>
 		<div class="section-background-color section-background-color-2">
 		
 			<div class="main" style="text-align:left;">
@@ -77,11 +80,11 @@ width:100%;
       $url .= "hostedSecureID=cpt280695546837&";
       $url .= "hostedSecureAPIToken=314463a4134943a1df89146ca9d34571&";
       //$url .= "hostedSecureID=cpt412581415334SB&";  
-      $url .= "callback_url=https://grouca.com/Callback.html&";
-      $url .= "cancel_url=https://grouca.com/signup.php&";
-      $url .= "css_url=https://grouca.com/css/form.css&";
-      $url .= "return_url=https://grouca.com/success.php&";
-      $url .= "content_template_url=https://grouca.com/payment.php&";
+      $url .= "callback_url=https://www.grouca.com/Callback.html&";
+      $url .= "cancel_url=https://www.grouca.com/signup.php&";
+      $url .= "css_url=https://www.grouca.com/css/form.css&";
+      $url .= "return_url=https://www.grouca.com/success.php&";
+      $url .= "content_template_url=https://www.grouca.com/payment.php&";
       $url .= "action=buildForm&";
 if(isset($_SESSION['UserName'])){$url .= "customer_email=".$_SESSION['UserName']."&";}
    //$uniqid = $prefix . uniqid();
@@ -114,53 +117,59 @@ else {$url .= "amount=99.00";}
 echo '<iframe class="iframeStyle" id="hpfFrame" src="'.$url.'"></iframe>';
 ?>
                 </div>
+                        
+                        <style> 
+                            @media (max-width: 600px) {
+                                #sub {margin-top:20px;}
+                            }
+                        </style>
 						<!-- /Contact form -->
-					 <p class="subheader" style="padding:0px;margin-top:20px;">Your subscription includes:</p>
-                        <ul>
-                            <li style="margin-top:10px;"><b>Grouca’s High Probability Trade Locator</b><br><br>We’ve developed innovative, data-driven technology that scours the market, then zeroes in on trades that provide the highest statistical chances of success based on price momentum, fundamentals and option strategy.</li>
-                            <li style="margin-top:10px;"><b>Full Access: Current & Future High Probability Trades</b><p>Whenever an open trade requires rebalancing or adjusting to get back on trade, you will receive an Adjustment alert from Grouca’s intelligent risk management tool.</p>
-<p>Each Adjustment alert tells you:</p>
-                                <ul style="list-style-type: disc;padding-left: 20px;">
-                                <li>When to book a profit</li>
-                                <li>How to leverage current gains higher</li>
-                                <li>How to adjust trades to minimize risk</li>
-                                <li>How to reverse losing positions to break even or get back to gain status.</li>
-                        </ul></li>
-                            
-                            <li style="margin-top:10px;"><b>Full Access: Adjustment Manager</b><p>Once we identify a new high probability trade, you receive a New Trade alert, complete with a detailed options strategy. When open trades require rebalancing or adjustments, you’ll receive an At Risk or In Trouble alert that outlines how to get back on track.</p><p>Each new trade contains:</p>
-                                <ul style="list-style-type: disc;padding-left: 20px;">
-                                    <li>Option strategy</li>
-                                    <li>Underlying stock name and price</li>
-                                    <li>Detailed instructions on how to place the order</li>
-                                    <li>What entry price to use</li>
-                                    <li>Target gain and risk profile</li>
-                                </ul>
-                            </li>
-                            <li style="margin-top:10px;"><b>An Options Strategy, 100% Modeled for You</b><p>We model the trade or adjustment entirely, so all you have to do is submit them to your broker. Click the submit button included in each alert to send the fully modeled trade to your broker in seconds.</p></li>
+                        <div class="desktop">
+                         <p class="subheader" style="padding:0px;margin-top:20px;">RISK DISCLOSURE: </p>
+                        <p style="padding-bottom:10px;">Grouca is a educational site designed to empower new option traders with ideas. You are fully responsible for any investment decision you make. Evaluate any strategy prior to use to understand risk and suitability. Remember, you should always consult with a licensed securities professional before purchasing or selling securities of companies profiled or discussed on Grouca.com or in our service alerts. Use this content at your own risk without guarantee or warranty of any kind from Grouca. Grouca makes no investment recommendations and do not provide financial, tax or legal advice. Grouca is a service provided by Labtrade,LLC.</p>
+                            </div>
+                        
+					
                         
 					</div>
 					<!-- /Left column -->
 
 					<!-- Right column -->
 					<div class="column-right">
-						
-						<p class="subheader" style="padding:0px;">Expertly selected trades, executed in seconds.</p>
-                        <p style="padding-bottom:10px;">Trade options like the experts, without the time commitment. Grouca lets you navigate the complex world of options trading with ease, even on the go.</p>
                         
-                        <p class="subheader" style="padding:0px;">No long-term commitment required.</p>
-                        <p style="padding-bottom:10px;">Cancel your monthly or annual subscription at any time.</p>
-                        
-                        <p class="subheader" style="padding:0px;">Cancel your monthly or annual subscription at any time.</p>
-                        <p style="padding-bottom:10px;">Trade options like the experts, without the time commitment. Grouca lets you navigate the complex world of options trading with ease, even on the go.</p>
-                        
-                        <p class="subheader" style="padding:0px;">SATISFACTION GUARANTEED!</p>
+                         <p id="sub" class="subheader" style="padding:0px;">Your subscription includes:</p>
+                        <ul>
+                            <li style="margin-top:10px;"><b>Grouca’s High Probability Trade</b><br><br>We’ve developed innovative, data-driven technology that scours the market, then zeroes in on trades that provide the highest statistical chances of success based on price momentum, fundamentals and option strategy.</li>
+                            <li style="margin-top:10px;"><b>Full Access: Current & Future Trades and Adjustments</b><p>Once we identify a new high probability trade, you receive a New Trade alert, complete with a detailed strategy. When open trades require rebalancing, you’ll receive an Adjustment alert that outlines how to get back on track.</p>
+<p><b>Each new trade contains:</b></p>
+                                <ul style="list-style-type: disc;padding-left: 20px;">
+                                <li>Option strategy</li>
+                                <li>Underlying name and price</li>
+                                <li>Detailed information of options</li>
+                                <li>What entry value to use</li>
+                                <li>Target gain and loss profile</li>
+                        </ul></li>
+                            
+        
+                            <li style="margin-top:10px;"><b>An Options Strategy, 100% Modeled for You</b><p>We model the trade or adjustment entirely, so all you have to do is submit them to your broker by clicking a button. Trade options like the experts, without the time commitment. Grouca lets you navigate the complex world of options trading with ease, even on the go.</p></li>
+                            
+                            <p><b>Each Adjustment alert tells you:</b></p>
+                                <ul style="list-style-type: disc;padding-left: 20px;">
+                                <li>When to book a profit</li>
+                                    <li>How to leverage current gains higher</li>
+                                    <li>How to adjust trades to minimize risk</li>
+                                    <li>When to close a trade</li>
+                            </ul>
+                        <li>
+                        <p class="subheader" style="padding:0px;margin-top:20px;">SATISFACTION GUARANTEED!</p>
                         <p style="padding-bottom:10px;">If, for any reason, you are not 100% satisfied with your Grouca experience, <a href="index.php#contact">please let us know</a>. We value your input and stand behind our guarantee. We’re confident about the performance of the trades we handpick. That’s why we don’t ask you to sign any long-term contracts. Month-to-month subscriptions can be canceled at any time. And so can annual subscriptions. We’re happy to provide a prorated refund, based on the monthly rate, for time used. </p>
-                        
-                        <p class="subheader" style="padding:0px;"> ADDITIONAL INFO:</p>
-                        <p style="padding-bottom:10px;">All credit card charges will appear under the name Labtrade, LLC. Maurice Lichten, Grouca’s Managing Director, may have a financial interest in some or all of Grouca's recommendations as he trades on the same equities and options that are recommended. </p>
-                        
-                        <p class="subheader" style="padding:0px;">RISK DISCLOSURE: </p>
-                        <p style="padding-bottom:10px;">Past performance is not necessarily indicative of future results. Grouca is not registered or regulated as a broker-dealer. Grouca  is a educational site designed to empower option traders. While our trading strategies have performed well for our students in the past, it is not necessarily indicative of future results. All of the content on our website and in our email alerts is for educational and informational purposes only, and should not be construed as an offer, or solicitation of an offer, to buy or sell securities. Remember, you should always consult with a licensed securities professional before purchasing or selling securities of companies profiled or discussed on Grouca.com or in our service alerts.</p>
+                            </li>
+                        </ul>
+                        <div class="mobile">
+                          <p class="subheader" style="padding:0px;margin-top:20px;">RISK DISCLOSURE: </p>
+                        <p style="padding-bottom:10px;">Grouca is a educational site designed to empower new option traders with ideas. You are fully responsible for any investment decision you make. Evaluate any strategy prior to use to understand risk and suitability. Remember, you should always consult with a licensed securities professional before purchasing or selling securities of companies profiled or discussed on Grouca.com or in our service alerts. Use this content at your own risk without guarantee or warranty of any kind from Grouca. Grouca makes no investment recommendations and do not provide financial, tax or legal advice. Grouca is a service provided by Labtrade,LLC.</p>
+                            </div>
+                       
 					</div>
 					<!-- /Right column -->
 

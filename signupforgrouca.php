@@ -1,8 +1,3 @@
-    <style>
-         @media only screen and (min-width:864px){
-        #menu-selected {width: 79px !important;left: 678px !important;}
-        }
-    </style>    
 <?php
 session_start();
 
@@ -77,11 +72,17 @@ require_once('include/header.php');
 ?>
 
 		<body>
+              <style>
+         @media only screen and (min-width:864px){
+        #menu-selected {width: 79px !important;left: 678px !important;}
+        }
+        body {color: #c3c3c3;}
+    </style> 
 
 			<ul class="page-list">
 
 
-				<li class="page-contact" id="page-contact">
+				<li class="page-perf" id="page-perf">
 					<?php require_once('page/signupforgrouca.php'); ?>
 				</li>
 
