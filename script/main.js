@@ -12,6 +12,8 @@ window.location.hash = "";
 $(document).ready(function() 
 {
 
+
+
 	/**************************************************************************/
 	/*	Template options													  */
 	/**************************************************************************/
@@ -74,5 +76,3 @@ $(document).ready(function()
 	template.createParallax();
 	
 });
-
-

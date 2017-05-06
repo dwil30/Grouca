@@ -1,17 +1,9 @@
 		<div class="footer">
-			
 			<div class="main">
-				
-				<!-- Layout 33x66% -->
 				<div class="layout-p-33x66 clear-fix">
-					
-					<!-- Left column: copyright -->
 					<div class="column-left">
 						&copy; 2017  Grouca
 					</div>
-					<!-- /Left column: copyright -->
-					
-					<!-- Right column: menu -->
 					<div class="column-right">
 						<ul class="footer-menu list-0">
 							<li><a href="index.php#home">Home</a></li>
@@ -48,31 +40,10 @@
                             
                      
 						</ul>
-					</div>	
-					<!-- /Right column: Menu -->
-					
+					</div>					
 				</div>
-				<!-- /Layout 33x66% -->
-				
 			</div>
-			
 		</div>		
-
 		<?php require_once('script_include.php'); ?>
-
-<!--<script>
-
-    $(function(){
-      // bind change event to select
-      $('#mobile-menu').on('change', function () {
-          var url = $(this).val(); // get selected value
-          if (url) { // require a URL
-              window.location = url; // redirect
-          }
-          return false;
-      });
-    });
-</script>-->
 	</body>
-
 </html>

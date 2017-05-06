@@ -3,3 +3,33 @@ RewriteCond %{HTTP_HOST} !^$
 RewriteCond %{HTTP_HOST} !^www\. [NC]
 RewriteCond %{HTTPS}s ^on(s)|
 RewriteRule ^ http%1://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+FileETag none
+<FilesMatch "\.(htm|html|css|js|php)$">
+AddDefaultCharset UTF-8
+DefaultLanguage en-US
+</FilesMatch>
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/jpg "access 1 month"
+ExpiresByType image/jpeg "access 1 month"
+ExpiresByType image/gif "access 1 month"
+ExpiresByType image/png "access 1 month"
+ExpiresByType text/css "access 1 month"
+ExpiresByType text/html "access 1 month"
+ExpiresByType application/pdf "access 1 month"
+ExpiresByType text/x-javascript "access 1 month"
+ExpiresByType application/x-shockwave-flash "access 1 month"
+ExpiresByType image/x-icon "access 1 month"
+ExpiresDefault "access 1 month"
+</IfModule>
+<IfModule mod_deflate.c>
+<IfModule mod_headers.c>
+Header append Vary User-Agent env=!dont-vary
+</IfModule>
+AddOutputFilterByType DEFLATE text/css text/x-component application/x-javascript application/javascript text/javascript text/x-js text/html text/richtext image/svg+xml text/plain text/xsd text/xsl text/xml image/x-icon application/json
+<IfModule mod_mime.c>
+# DEFLATE by extension
+AddOutputFilter DEFLATE js css htm html xml
+</IfModule>
+</IfModule>

@@ -5,7 +5,7 @@
 
 				<!-- Logo from nav bar -->
 				<div class="logo">
-					<a href="index.php#home">
+					<a href="/#home">
 						<img src="image/logo.png" alt=""/>
 					</a>
 				</div>
@@ -19,11 +19,11 @@
 				<div id="menu">
 					<div id="menu-selected"></div>
 					<ul class="sf-menu">
-						<li><a href="index.php#page-about">About<span></span></a></li>
-						<li><a href="index.php#page-services">Services<span></span></a></li>
-						<li><a href="index.php#page-team">Team<span></span></a></li>
-						<li><a href="index.php#page-pricing-plans">Pricing<span></span></a></li>
-						<li><a href="index.php#page-contact">Contact<span></span></a></li>
+						<li><a href="/#page-about">About<span></span></a></li>
+						<li><a href="/#page-services">Services<span></span></a></li>
+						<li><a href="/#page-team">Team<span></span></a></li>
+						<li><a href="/#page-pricing-plans">Pricing<span></span></a></li>
+						<li><a href="/#page-contact">Contact<span></span></a></li>
 						<li><a href="perf.php">Performance<span></span></a></li>            
             <?php if (empty($_SESSION['LoggedIn'])){ ?>
 						<li><a href="log.php">Login<span></span></a></li>
@@ -57,11 +57,11 @@
                 <!-- Responsive menu from nav bar -->
 				<div id="menu-responsive" class="clear-fix">
 					<select>
-						<option value="index.php#page-about">About</option>
-						<option value="index.php#page-services">Services</option>
-						<option value="index.php#page-team">Team</option>
-						<option value="index.php#page-pricing-plans">Pricing</option>
-						<option value="index.php#page-contact" >Contact</option>
+						<option value="/#page-about">About</option>
+						<option value="/#page-services">Services</option>
+						<option value="/#page-team">Team</option>
+						<option value="/#page-pricing-plans">Pricing</option>
+						<option value="/#page-contact" >Contact</option>
             <option value="perf.php" <?php if (strpos($actual_link,'perf') !== false) {echo 'Selected';}?> >Performance</option>
 						
             <?php if (empty($_SESSION['LoggedIn'])){ ?>
