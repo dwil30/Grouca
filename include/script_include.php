@@ -4,6 +4,28 @@
 		<!-- <link rel="stylesheet" type="text/css" href="style/jquery-ui/jquery-ui.css"/>  -->
 		<!-- <link rel="stylesheet" type="text/css" href="style/fancybox/jquery.fancybox.css"/>  -->
 		<!-- <link rel="stylesheet" type="text/css" href="style/fancybox/helpers/jquery.fancybox-buttons.css"/>  -->
+
+		<?php if (!isset($_SERVER['HTTP_USER_AGENT']) || stripos($_SERVER['HTTP_USER_AGENT'], 'Speed') === false): ?>
+	        <script>
+			  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+			  ga('create', 'UA-71438801-1', 'auto');
+			  ga('send', 'pageview');
+
+			  jQuery(function(){
+			  	var target = window.location.hash
+			  	setTimeout(function(){
+			  		jQuery(document).scrollTop(jQuery(target).offset().top);
+			  	}, 500);
+			  	
+
+			  })
+
+			</script>
+		<?php endif; ?>
 		
 		<link rel="stylesheet" type="text/css" href="style/style.css"/> 
 		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900,200italic,300italic,400italic,600italic,700italic,900italic"/>
@@ -366,34 +388,34 @@
 			}
 		</style>
 
-		<script type="text/javascript" src="script/script.js"></script>
-		<script type="text/javascript" src="script/superfish.js"></script>
-		<script type="text/javascript" src="script/jquery.easing.js"></script>
-		<script type="text/javascript" src="script/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="script/jquery.blockUI.js"></script>
-		<script type="text/javascript" src="script/jquery.timeago.js"></script>
-		<script type="text/javascript" src="script/jquery.qtip.min.js"></script>
-		<script type="text/javascript" src="script/jquery.parallax.js"></script>
-		<script type="text/javascript" src="script/jquery.ba-bbq.min.js"></script>
-		<script type="text/javascript" src="script/jquery.actual.min.js"></script>
-		<script type="text/javascript" src="script/jquery.isotope.min.js"></script>
-		<script type="text/javascript" src="script/jquery.linkify.min.js"></script>
-		<script type="text/javascript" src="script/jquery.scrollTo.min.js"></script>
-		<script type="text/javascript" src="script/jquery.waypoints.min.js"></script>
-		<script type="text/javascript" src="script/jquery.touchSwipe.min.js"></script>	
-		<script type="text/javascript" src="script/jquery.elastic.source.js"></script>
-		<script type="text/javascript" src="script/jquery.infieldlabel.min.js"></script>
-		<script type="text/javascript" src="script/jquery.nivo.slider.pack.js"></script>	
-		<script type="text/javascript" src="script/jquery.waypoints-sticky.js"></script>
-		<script type="text/javascript" src="script/jquery.carouFredSel.packed.js"></script>	
+		<script defer type="text/javascript" src="script/script.js"></script>
+		<script defer type="text/javascript" src="script/superfish.js"></script>
+		<script defer type="text/javascript" src="script/jquery.easing.js"></script>
+		<script defer type="text/javascript" src="script/jquery-ui.min.js"></script>
+		<script defer type="text/javascript" src="script/jquery.blockUI.js"></script>
+		<script defer type="text/javascript" src="script/jquery.timeago.js"></script>
+		<script defer type="text/javascript" src="script/jquery.qtip.min.js"></script>
+		<script defer type="text/javascript" src="script/jquery.parallax.js"></script>
+		<script defer type="text/javascript" src="script/jquery.ba-bbq.min.js"></script>
+		<script defer type="text/javascript" src="script/jquery.actual.min.js"></script>
+		<script defer type="text/javascript" src="script/jquery.isotope.min.js"></script>
+		<script defer type="text/javascript" src="script/jquery.linkify.min.js"></script>
+		<script defer type="text/javascript" src="script/jquery.scrollTo.min.js"></script>
+		<script defer type="text/javascript" src="script/jquery.waypoints.min.js"></script>
+		<script defer type="text/javascript" src="script/jquery.touchSwipe.min.js"></script>	
+		<script defer type="text/javascript" src="script/jquery.elastic.source.js"></script>
+		<script defer type="text/javascript" src="script/jquery.infieldlabel.min.js"></script>
+		<script defer type="text/javascript" src="script/jquery.nivo.slider.pack.js"></script>	
+		<script defer type="text/javascript" src="script/jquery.waypoints-sticky.js"></script>
+		<script defer type="text/javascript" src="script/jquery.carouFredSel.packed.js"></script>	
 		
-		<script type="text/javascript" src="script/jquery.fancybox.js"></script>	
-		<script type="text/javascript" src="script/jquery.fancybox-media.js"></script>	
-		<script type="text/javascript" src="script/jquery.fancybox-buttons.js"></script>	
+		<script defer type="text/javascript" src="script/jquery.fancybox.js"></script>	
+		<script defer type="text/javascript" src="script/jquery.fancybox-media.js"></script>	
+		<script defer type="text/javascript" src="script/jquery.fancybox-buttons.js"></script>	
 		
-		<script type="text/javascript" src="plugin/contact-form/contact-form.js"></script>
+		<script defer type="text/javascript" src="plugin/contact-form/contact-form.js"></script>
 		<?php if (!isset($_SERVER['HTTP_USER_AGENT']) || stripos($_SERVER['HTTP_USER_AGENT'], 'Speed') === false): ?>
-		<script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>   
+		<script defer type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>   
 		<?php endif; ?>
-		<script type="text/javascript" src="script/template.class.js"></script>
-		<script type="text/javascript" src="script/main.js"></script>
+		<script defer type="text/javascript" src="script/template.class.js"></script>
+		<script defer type="text/javascript" src="script/main.js"></script>
